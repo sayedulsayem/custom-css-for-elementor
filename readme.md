@@ -39,7 +39,7 @@ For a more detailed explanation, check out the following documentation.
 
 ## Links
 
-Wordpress.org Plugin link [Support Webp](https://wordpress.org/plugins/support-webp/).
+Wordpress.org Plugin link [Custom CSS for Elementor](https://wordpress.org/plugins/custom-css-for-elementor/).
 
 Wordpress.org Author link [Sayedul Sayem](https://profiles.wordpress.org/sayedulsayem/).
 
