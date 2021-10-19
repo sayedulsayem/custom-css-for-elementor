@@ -1,0 +1,156 @@
+[
+    {
+        "name": "wikimedia/at-ease",
+        "version": "v2.1.0",
+        "version_normalized": "2.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/at-ease.git",
+            "reference": "e8ebaa7bb7c8a8395481a05f6dc4deaceab11c33"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/e8ebaa7bb7c8a8395481a05f6dc4deaceab11c33",
+            "reference": "e8ebaa7bb7c8a8395481a05f6dc4deaceab11c33",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.2.9"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
+        },
+        "time": "2021-02-27T15:53:37+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
+            },
+            "files": [
+                "src/Wikimedia/Functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            },
+            {
+                "name": "MediaWiki developers",
+                "email": "wikitech-l@lists.wikimedia.org"
+            }
+        ],
+        "description": "Safe replacement to @ for suppressing warnings.",
+        "homepage": "https://www.mediawiki.org/wiki/at-ease"
+    },
+    {
+        "name": "wikimedia/css-sanitizer",
+        "version": "v3.0.2",
+        "version_normalized": "3.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/css-sanitizer.git",
+            "reference": "718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4",
+            "reference": "718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4",
+            "shasum": ""
+        },
+        "require": {
+            "ext-iconv": "*",
+            "ext-mbstring": "*",
+            "php": ">=7.2.0",
+            "wikimedia/at-ease": "^2.0.0",
+            "wikimedia/utfnormal": "2.0.0 || ^3.0.1"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "mediawiki/minus-x": "1.1.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5",
+            "wikimedia/testing-access-wrapper": "1.0.0"
+        },
+        "time": "2021-03-21T17:30:58+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\CSS\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Brad Jorsch",
+                "email": "bjorsch@wikimedia.org"
+            }
+        ],
+        "description": "Classes to parse and sanitize CSS",
+        "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer"
+    },
+    {
+        "name": "wikimedia/utfnormal",
+        "version": "3.0.2",
+        "version_normalized": "3.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/utfnormal.git",
+            "reference": "e690d29487a6ee346bcf4cbf5a6fd89170fa2306"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/e690d29487a6ee346bcf4cbf5a6fd89170fa2306",
+            "reference": "e690d29487a6ee346bcf4cbf5a6fd89170fa2306",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "php": ">=7.2.9"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
+        },
+        "time": "2021-03-20T16:59:44+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Brion Vibber",
+                "email": "bvibber@wikimedia.org"
+            }
+        ],
+        "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
+        "homepage": "https://www.mediawiki.org/wiki/utfnormal"
+    }
+]
