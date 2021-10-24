@@ -54,6 +54,17 @@ class Hook_Action {
             ]
         );
 
+        $element->start_controls_tabs(
+			'style_tabs'
+		);
+
+        $element->start_controls_tab(
+			'_custom_css_desktop',
+			[
+				'label' => __( 'Desktop', 'plugin-name' ),
+			]
+		);
+
         $element->add_control(
             '_custom_css_f_ele_title_desktop',
             [
@@ -82,6 +93,16 @@ class Hook_Action {
                 'content_classes' => 'elementor-descriptor',
             ]
         );
+
+        $element->end_controls_tab();
+
+
+        $element->start_controls_tab(
+			'_custom_css_tablet',
+			[
+				'label' => __( 'Tablet', 'plugin-name' ),
+			]
+		);
 
         $element->add_control(
             '_custom_css_f_ele_title_tablet',
@@ -113,6 +134,16 @@ class Hook_Action {
             ]
         );
 
+        $element->end_controls_tab();
+
+
+        $element->start_controls_tab(
+			'_custom_css_mobile',
+			[
+				'label' => __( 'Mobile', 'plugin-name' ),
+			]
+		);
+
         $element->add_control(
             '_custom_css_f_ele_title_mobile',
             [
@@ -142,6 +173,9 @@ class Hook_Action {
                 'content_classes' => 'elementor-descriptor',
             ]
         );
+
+        $element->end_controls_tab();
+        $element->end_controls_tabs();
 
         $element->end_controls_section();
     }
