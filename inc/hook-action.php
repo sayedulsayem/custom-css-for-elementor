@@ -133,7 +133,7 @@ class Hook_Action {
 				'label' => __( '<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor' ),
 			]
 		);
-        
+
         $element->add_control(
             '_custom_css_f_ele_title_mobile',
             [
