@@ -38,7 +38,7 @@ final class Plugin {
      * @return void
      */
     public function define_constants() {
-        define('CUSTOM_CSS_FELE_VERSION', '1.0.0');
+        define('CUSTOM_CSS_FELE_VERSION', '1.1.0');
         define('CUSTOM_CSS_FELE_PACKAGE', 'free');
         define('CUSTOM_CSS_FELE_PLUGIN_URL', plugin_dir_url(__FILE__));
         define('CUSTOM_CSS_FELE_PLUGIN_DIR', plugin_dir_path(__FILE__));
