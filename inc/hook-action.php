@@ -109,7 +109,6 @@ class Hook_Action {
             [
                 'label' => esc_html__('Custom CSS (Tablet)', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::HEADING,
-                'separator' => 'before',
             ]
         );
 
@@ -149,7 +148,6 @@ class Hook_Action {
             [
                 'label' => esc_html__('Custom CSS (Mobile)', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::HEADING,
-                'separator' => 'before',
             ]
         );
 
