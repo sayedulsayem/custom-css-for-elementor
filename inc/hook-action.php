@@ -68,15 +68,15 @@ class Hook_Action {
         $element->add_control(
             '_custom_css_f_ele_title_desktop',
             [
-                'label' => esc_html__('Custom CSS (Desktop)', 'custom-css-for-elementor'),
+                'label' => esc_html__('Custom CSS', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::HEADING,
             ]
         );
 
         $element->add_control(
-            '_custom_css_f_ele_css',
+            '_custom_css_f_ele_css_desktop',
             [
-                'label' => esc_html__('Custom CSS (Desktop)', 'custom-css-for-elementor'),
+                'label' => esc_html__('Custom CSS', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::CODE,
                 'language' => 'css',
                 'render_type' => 'ui',
@@ -124,15 +124,6 @@ class Hook_Action {
             ]
         );
 
-        $element->add_control(
-            '_custom_css_f_ele_description_tablet',
-            [
-                'raw' => esc_html__('Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'custom-css-for-elementor'),
-                'type' => Controls_Manager::RAW_HTML,
-                'content_classes' => 'elementor-descriptor',
-            ]
-        );
-
         $element->end_controls_tab();
 
 
@@ -142,7 +133,7 @@ class Hook_Action {
 				'label' => __( '<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor' ),
 			]
 		);
-
+        
         $element->add_control(
             '_custom_css_f_ele_title_mobile',
             [
@@ -160,15 +151,6 @@ class Hook_Action {
                 'render_type' => 'ui',
                 'show_label' => false,
                 'separator' => 'none',
-            ]
-        );
-
-        $element->add_control(
-            '_custom_css_f_ele_description_mobile',
-            [
-                'raw' => esc_html__('Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'custom-css-for-elementor'),
-                'type' => Controls_Manager::RAW_HTML,
-                'content_classes' => 'elementor-descriptor',
             ]
         );
 
@@ -194,11 +176,11 @@ class Hook_Action {
 
         $element_settings = $element->get_settings();
 
-        if (empty($element_settings['_custom_css_f_ele_css']) && empty($element_settings['_custom_css_f_ele_css_tablet']) && empty($element_settings['_custom_css_f_ele_css_mobile'])) {
+        if (empty($element_settings['_custom_css_f_ele_css_desktop']) && empty($element_settings['_custom_css_f_ele_css_tablet']) && empty($element_settings['_custom_css_f_ele_css_mobile'])) {
             return;
         }
 
-        $custom_css_desktop = trim($element_settings['_custom_css_f_ele_css']);
+        $custom_css_desktop = trim($element_settings['_custom_css_f_ele_css_desktop']);
         $custom_css_tablet = trim($element_settings['_custom_css_f_ele_css_tablet']);
         $custom_css_mobile = trim($element_settings['_custom_css_f_ele_css_mobile']);
 
@@ -206,9 +188,9 @@ class Hook_Action {
             return;
         }
 
-        $custom_css .= ( (!empty($custom_css_desktop))? " @media (min-width: 1025px) { " . $custom_css_desktop . "}": "" );
-        $custom_css .= ( (!empty($custom_css_tablet))? " @media (min-width: 768px) and (max-width: 1024px) { " . $custom_css_tablet . "}": "" );
-        $custom_css .= ( (!empty($custom_css_tablet))? " @media (min-width: 320px) and (max-width: 767px) { " . $custom_css_mobile . "}": "" );
+        $custom_css .= ( (!empty($custom_css_desktop))? $custom_css_desktop: "" );
+        $custom_css .= ( (!empty($custom_css_tablet))? " @media (max-width: 768px) { " . $custom_css_tablet . "}": "" );
+        $custom_css .= ( (!empty($custom_css_mobile))? " @media (max-width: 425px) { " . $custom_css_mobile . "}": "" );
 
         if(empty($custom_css)) {
             return;
@@ -235,11 +217,11 @@ class Hook_Action {
 
         $element_settings = $document->get_settings();
 
-        if (empty($element_settings['_custom_css_f_ele_css']) && empty($element_settings['_custom_css_f_ele_css_tablet']) && empty($element_settings['_custom_css_f_ele_css_mobile'])) {
+        if (empty($element_settings['_custom_css_f_ele_css_desktop']) && empty($element_settings['_custom_css_f_ele_css_tablet']) && empty($element_settings['_custom_css_f_ele_css_mobile'])) {
             return;
         }
 
-        $custom_css_desktop = trim($element_settings['_custom_css_f_ele_css']);
+        $custom_css_desktop = trim($element_settings['_custom_css_f_ele_css_desktop']);
         $custom_css_tablet = trim($element_settings['_custom_css_f_ele_css_tablet']);
         $custom_css_mobile = trim($element_settings['_custom_css_f_ele_css_mobile']);
 
@@ -247,9 +229,9 @@ class Hook_Action {
             return;
         }
 
-        $custom_css .= ( (!empty($custom_css_desktop))? " @media (min-width: 1025px) { " . $custom_css_desktop . "}": "" );
-        $custom_css .= ( (!empty($custom_css_tablet))? " @media (min-width: 768px) and (max-width: 1024px) { " . $custom_css_tablet . "}": "" );
-        $custom_css .= ( (!empty($custom_css_tablet))? " @media (min-width: 320px) and (max-width: 767px) { " . $custom_css_mobile . "}": "" );
+        $custom_css .= ( (!empty($custom_css_desktop))? $custom_css_desktop: "" );
+        $custom_css .= ( (!empty($custom_css_tablet))? " @media (max-width: 768px) { " . $custom_css_tablet . "}": "" );
+        $custom_css .= ( (!empty($custom_css_mobile))? " @media (max-width: 425px) { " . $custom_css_mobile . "}": "" );
 
         if(empty($custom_css)) {
             return;
