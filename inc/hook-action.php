@@ -61,7 +61,7 @@ class Hook_Action {
         $element->start_controls_tab(
 			'_custom_css_desktop',
 			[
-				'label' => __( 'Desktop', 'plugin-name' ),
+				'label' => __( '<span class="eicon-device-desktop"></span>', 'custom-css-for-elementor' ),
 			]
 		);
 
@@ -100,7 +100,7 @@ class Hook_Action {
         $element->start_controls_tab(
 			'_custom_css_tablet',
 			[
-				'label' => __( 'Tablet', 'plugin-name' ),
+				'label' => __( '<span class="eicon-device-tablet"></span>', 'custom-css-for-elementor' ),
 			]
 		);
 
@@ -139,7 +139,7 @@ class Hook_Action {
         $element->start_controls_tab(
 			'_custom_css_mobile',
 			[
-				'label' => __( 'Mobile', 'plugin-name' ),
+				'label' => __( '<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor' ),
 			]
 		);
 
