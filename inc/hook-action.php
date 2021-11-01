@@ -54,6 +54,17 @@ class Hook_Action {
             ]
         );
 
+        $element->start_controls_tabs(
+			'style_tabs'
+		);
+
+        $element->start_controls_tab(
+			'_custom_css_desktop',
+			[
+				'label' => __( '<span class="eicon-device-desktop"></span>', 'custom-css-for-elementor' ),
+			]
+		);
+
         $element->add_control(
             '_custom_css_f_ele_title_desktop',
             [
@@ -74,21 +85,20 @@ class Hook_Action {
             ]
         );
 
-        $element->add_control(
-            '_custom_css_f_ele_description',
-            [
-                'raw' => esc_html__('Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'custom-css-for-elementor'),
-                'type' => Controls_Manager::RAW_HTML,
-                'content_classes' => 'elementor-descriptor',
-            ]
-        );
+        $element->end_controls_tab();
+
+        $element->start_controls_tab(
+			'_custom_css_tablet',
+			[
+				'label' => __( '<span class="eicon-device-tablet"></span>', 'custom-css-for-elementor' ),
+			]
+		);
 
         $element->add_control(
             '_custom_css_f_ele_title_tablet',
             [
                 'label' => esc_html__('Custom CSS (Tablet)', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::HEADING,
-                'separator' => 'before',
             ]
         );
 
@@ -104,12 +114,21 @@ class Hook_Action {
             ]
         );
 
+        $element->end_controls_tab();
+
+
+        $element->start_controls_tab(
+			'_custom_css_mobile',
+			[
+				'label' => __( '<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor' ),
+			]
+		);
+
         $element->add_control(
             '_custom_css_f_ele_title_mobile',
             [
                 'label' => esc_html__('Custom CSS (Mobile)', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::HEADING,
-                'separator' => 'before',
             ]
         );
 
@@ -122,6 +141,18 @@ class Hook_Action {
                 'render_type' => 'ui',
                 'show_label' => false,
                 'separator' => 'none',
+            ]
+        );
+
+        $element->end_controls_tab();
+        $element->end_controls_tabs();
+
+        $element->add_control(
+            '_custom_css_f_ele_description',
+            [
+                'raw' => esc_html__('Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'custom-css-for-elementor'),
+                'type' => Controls_Manager::RAW_HTML,
+                'content_classes' => 'elementor-descriptor',
             ]
         );
 
