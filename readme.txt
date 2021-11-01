@@ -4,7 +4,7 @@ Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 4.7
 Tested up to: 5.8.1
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -97,9 +97,16 @@ No. This plugin is highly secured. It will sanitize user input so that the user 
 
 == Changelog ==
 
+= 1.2.0 (02-11-2021) =
+
+- New: Support for column.
+- New: Support for section.
+
 = 1.1.0 (23-10-2021) =
+
 - Fix: CSS input UI change and clean.
 - Fix: CSS rules adjusted with normal CSS workflow.
 
 = 1.0.0 (19-10-2021) =
+
 * Initial release.

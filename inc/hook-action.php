@@ -7,6 +7,7 @@ defined('ABSPATH') || exit;
 
 use Elementor\Controls_Manager;
 use Elementor\Controls_Stack;
+use Elementor\Element_Base;
 use Elementor\Core\DynamicTags\Dynamic_CSS;
 use Elementor\Plugin as Elementor_Plugin;
 
@@ -28,6 +29,8 @@ class Hook_Action {
      */
     public function init() {
         add_action('elementor/element/common/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
+        add_action('elementor/element/section/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
+        add_action('elementor/element/column/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
 
         add_action('elementor/element/parse_css', [$this, 'add_post_css'], 10, 2);
         add_action('elementor/css-file/post/parse', [$this, 'add_page_settings_css']);
@@ -42,7 +45,7 @@ class Hook_Action {
      */
     public function register_controls(Controls_Stack $element, $section_id) {
 
-        if( !current_user_can('edit_pages') && !current_user_can('unfiltered_html')) {
+        if (!current_user_can('edit_pages') && !current_user_can('unfiltered_html')) {
             return;
         }
 
@@ -55,15 +58,15 @@ class Hook_Action {
         );
 
         $element->start_controls_tabs(
-			'style_tabs'
-		);
+            'style_tabs'
+        );
 
         $element->start_controls_tab(
-			'_custom_css_desktop',
-			[
-				'label' => __( '<span class="eicon-device-desktop"></span>', 'custom-css-for-elementor' ),
-			]
-		);
+            '_custom_css_desktop',
+            [
+                'label' => __('<span class="eicon-device-desktop"></span>', 'custom-css-for-elementor'),
+            ]
+        );
 
         $element->add_control(
             '_custom_css_f_ele_title_desktop',
@@ -88,11 +91,11 @@ class Hook_Action {
         $element->end_controls_tab();
 
         $element->start_controls_tab(
-			'_custom_css_tablet',
-			[
-				'label' => __( '<span class="eicon-device-tablet"></span>', 'custom-css-for-elementor' ),
-			]
-		);
+            '_custom_css_tablet',
+            [
+                'label' => __('<span class="eicon-device-tablet"></span>', 'custom-css-for-elementor'),
+            ]
+        );
 
         $element->add_control(
             '_custom_css_f_ele_title_tablet',
@@ -118,11 +121,11 @@ class Hook_Action {
 
 
         $element->start_controls_tab(
-			'_custom_css_mobile',
-			[
-				'label' => __( '<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor' ),
-			]
-		);
+            '_custom_css_mobile',
+            [
+                'label' => __('<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor'),
+            ]
+        );
 
         $element->add_control(
             '_custom_css_f_ele_title_mobile',
@@ -171,33 +174,9 @@ class Hook_Action {
             return;
         }
 
-        $custom_css = '';
-
         $element_settings = $element->get_settings();
 
-        if (empty($element_settings['_custom_css_f_ele_css_desktop']) && empty($element_settings['_custom_css_f_ele_css_tablet']) && empty($element_settings['_custom_css_f_ele_css_mobile'])) {
-            return;
-        }
-
-        $custom_css_desktop = trim($element_settings['_custom_css_f_ele_css_desktop']);
-        $custom_css_tablet = trim($element_settings['_custom_css_f_ele_css_tablet']);
-        $custom_css_mobile = trim($element_settings['_custom_css_f_ele_css_mobile']);
-
-        if (empty($custom_css_desktop) && empty($custom_css_tablet) && empty($custom_css_mobile)) {
-            return;
-        }
-
-        $custom_css .= ( (!empty($custom_css_desktop))? $custom_css_desktop: "" );
-        $custom_css .= ( (!empty($custom_css_tablet))? " @media (max-width: 768px) { " . $custom_css_tablet . "}": "" );
-        $custom_css .= ( (!empty($custom_css_mobile))? " @media (max-width: 425px) { " . $custom_css_mobile . "}": "" );
-
-        if(empty($custom_css)) {
-            return;
-        }
-
-        $custom_css = str_replace('selector', $post_css->get_element_unique_selector($element), $custom_css);
-
-        $sanitize_css = $this->parse_css_to_remove_injecting_code($custom_css);
+        $sanitize_css = $this->parse_css_to_remove_injecting_code($element_settings, $post_css->get_element_unique_selector($element));
 
         $post_css->get_stylesheet()->add_raw_css($sanitize_css);
     }
@@ -211,10 +190,23 @@ class Hook_Action {
     public function add_page_settings_css($post_css) {
 
         $document = Elementor_Plugin::instance()->documents->get($post_css->get_post_id());
-        
-        $custom_css = '';
 
         $element_settings = $document->get_settings();
+
+        $sanitize_css = $this->parse_css_to_remove_injecting_code($element_settings, $document->get_css_wrapper_selector());
+
+        $post_css->get_stylesheet()->add_raw_css($sanitize_css);
+    }
+
+    /**
+     * validate css and sanitize css for avoiding injection of malicious code function
+     *
+     * @param [type] $raw_css
+     * @return void
+     */
+    public function parse_css_to_remove_injecting_code($element_settings, $unique_selector) {
+
+        $custom_css = '';
 
         if (empty($element_settings['_custom_css_f_ele_css_desktop']) && empty($element_settings['_custom_css_f_ele_css_tablet']) && empty($element_settings['_custom_css_f_ele_css_mobile'])) {
             return;
@@ -228,30 +220,17 @@ class Hook_Action {
             return;
         }
 
-        $custom_css .= ( (!empty($custom_css_desktop))? $custom_css_desktop: "" );
-        $custom_css .= ( (!empty($custom_css_tablet))? " @media (max-width: 768px) { " . $custom_css_tablet . "}": "" );
-        $custom_css .= ( (!empty($custom_css_mobile))? " @media (max-width: 425px) { " . $custom_css_mobile . "}": "" );
+        $custom_css .= ((!empty($custom_css_desktop)) ? $custom_css_desktop : "");
+        $custom_css .= ((!empty($custom_css_tablet)) ? " @media (max-width: 768px) { " . $custom_css_tablet . "}" : "");
+        $custom_css .= ((!empty($custom_css_mobile)) ? " @media (max-width: 425px) { " . $custom_css_mobile . "}" : "");
 
-        if(empty($custom_css)) {
+        if (empty($custom_css)) {
             return;
         }
 
-        $custom_css = str_replace('selector', $document->get_css_wrapper_selector(), $custom_css);
+        $custom_css = str_replace('selector', $unique_selector, $custom_css);
 
-        $sanitize_css = $this->parse_css_to_remove_injecting_code($custom_css);
-
-        $post_css->get_stylesheet()->add_raw_css($sanitize_css);
-    }
-
-    /**
-     * validate css and sanitize css for avoiding injection of malicious code function
-     *
-     * @param [type] $raw_css
-     * @return void
-     */
-    public function parse_css_to_remove_injecting_code($raw_css) {
-
-        $remove_tags_css = wp_kses($raw_css, []);
+        $remove_tags_css = wp_kses($custom_css, []);
         $parser = Parser::newFromString($remove_tags_css);
         $parsed_css = $parser->parseStylesheet();
 

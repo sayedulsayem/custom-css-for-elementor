@@ -3,7 +3,7 @@
  * Plugin Name: Custom CSS for Elementor
  * Plugin URI: https://wordpress.org/plugins/custom-css-for-elementor/
  * Description: A lightweight plugin that open an option to add custom CSS code for each device (desktop, tablets, mobiles) by elementor widgets. 
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: sayedulsayem
  * Author URI: https://sayedulsayem.com/
  * Text Domain: custom-css-for-element
