@@ -18,7 +18,7 @@ final class Plugin {
     /**
      * elementor required version
      */
-    const CCFE_MINIMUM_ELE_VER = '2.0.0';
+    const CCFE_MINIMUM_ELE_VER = '3.9.0';
 
     /**
      * php required version
@@ -38,7 +38,7 @@ final class Plugin {
      * @return void
      */
     public function define_constants() {
-        define('CUSTOM_CSS_FELE_VERSION', '1.2.0');
+        define('CUSTOM_CSS_FELE_VERSION', '1.3.0');
         define('CUSTOM_CSS_FELE_PACKAGE', 'free');
         define('CUSTOM_CSS_FELE_PLUGIN_URL', plugin_dir_url(__FILE__));
         define('CUSTOM_CSS_FELE_PLUGIN_DIR', plugin_dir_path(__FILE__));

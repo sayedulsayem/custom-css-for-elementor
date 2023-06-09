@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Custom CSS for Elementor
+# Copyright (C) 2023 Custom CSS for Elementor
 # This file is distributed under the same license as the Custom CSS for Elementor package.
 msgid ""
 msgstr ""
@@ -13,61 +13,53 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: inc/hook-action.php:55, plugin.php:98, plugin.php:116, plugin.php:134
+#: inc/hook-action.php:56, plugin.php:97, plugin.php:115, plugin.php:133
 msgid "Custom CSS for Elementor"
 msgstr ""
 
-#: inc/hook-action.php:67
-msgid "<span class=\"eicon-device-desktop\"></span>"
-msgstr ""
-
-#: inc/hook-action.php:74, inc/hook-action.php:82
+#: inc/hook-action.php:75, inc/hook-action.php:83
 msgid "Custom CSS"
 msgstr ""
 
-#: inc/hook-action.php:96
-msgid "<span class=\"eicon-device-tablet\"></span>"
-msgstr ""
-
-#: inc/hook-action.php:103, inc/hook-action.php:112
+#: inc/hook-action.php:104, inc/hook-action.php:113
 msgid "Custom CSS (Tablet)"
 msgstr ""
 
-#: inc/hook-action.php:126
-msgid "<span class=\"eicon-device-mobile\"></span>"
-msgstr ""
-
-#: inc/hook-action.php:133, inc/hook-action.php:142
+#: inc/hook-action.php:134, inc/hook-action.php:143
 msgid "Custom CSS (Mobile)"
 msgstr ""
 
-#: inc/hook-action.php:156
+#: inc/hook-action.php:157
 msgid "Use \"selector\" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector"
 msgstr ""
 
-#: plugin.php:91
+#: inc/hook-action.php:167
+msgid "CSS will not reflect in editor panel. You have to save and open preview panel to get output."
+msgstr ""
+
+#: plugin.php:90
 msgid "Install Elementor"
 msgstr ""
 
-#: plugin.php:88
+#: plugin.php:87
 msgid "Activate Elementor"
 msgstr ""
 
 #. translators: 1: Plugin name 2: Elementor
-#: plugin.php:97
+#: plugin.php:96
 msgid "\"%1$s\" requires \"%2$s\" to be installed and activated. %3$s"
 msgstr ""
 
-#: plugin.php:99, plugin.php:117
+#: plugin.php:98, plugin.php:116
 msgid "Elementor"
 msgstr ""
 
 #. translators: 1: Plugin name 2: Elementor 3: Required Elementor version
 #. translators: 1: Plugin name 2: PHP 3: Required PHP version
-#: plugin.php:115, plugin.php:133
+#: plugin.php:114, plugin.php:132
 msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
 msgstr ""
 
-#: plugin.php:135
+#: plugin.php:134
 msgid "PHP"
 msgstr ""

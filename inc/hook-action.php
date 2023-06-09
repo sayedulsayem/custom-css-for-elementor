@@ -7,7 +7,6 @@ defined('ABSPATH') || exit;
 
 use Elementor\Controls_Manager;
 use Elementor\Controls_Stack;
-use Elementor\Element_Base;
 use Elementor\Core\DynamicTags\Dynamic_CSS;
 use Elementor\Plugin as Elementor_Plugin;
 
@@ -31,6 +30,8 @@ class Hook_Action {
         add_action('elementor/element/common/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
         add_action('elementor/element/section/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
         add_action('elementor/element/column/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
+
+        add_action('elementor/element/container/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
 
         add_action('elementor/element/parse_css', [$this, 'add_post_css'], 10, 2);
         add_action('elementor/css-file/post/parse', [$this, 'add_page_settings_css']);
@@ -64,7 +65,7 @@ class Hook_Action {
         $element->start_controls_tab(
             '_custom_css_desktop',
             [
-                'label' => __('<span class="eicon-device-desktop"></span>', 'custom-css-for-elementor'),
+                'label' => '<span class="eicon-device-desktop" title="Desktop"></span>',
             ]
         );
 
@@ -93,7 +94,7 @@ class Hook_Action {
         $element->start_controls_tab(
             '_custom_css_tablet',
             [
-                'label' => __('<span class="eicon-device-tablet"></span>', 'custom-css-for-elementor'),
+                'label' => '<span class="eicon-device-tablet" title="Tablet"></span>',
             ]
         );
 
@@ -123,7 +124,7 @@ class Hook_Action {
         $element->start_controls_tab(
             '_custom_css_mobile',
             [
-                'label' => __('<span class="eicon-device-mobile"></span>', 'custom-css-for-elementor'),
+                'label' => '<span class="eicon-device-mobile" title="Mobile"></span>',
             ]
         );
 
@@ -156,6 +157,15 @@ class Hook_Action {
                 'raw' => esc_html__('Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'custom-css-for-elementor'),
                 'type' => Controls_Manager::RAW_HTML,
                 'content_classes' => 'elementor-descriptor',
+            ]
+        );
+
+        $element->add_control(
+            '_custom_css_f_ele_notice',
+            [
+                'type' => Controls_Manager::RAW_HTML,
+                'raw' => esc_html__('CSS will not reflect in editor panel. You have to save and open preview panel to get output.', 'custom-css-for-elementor'),
+                'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
             ]
         );
 
