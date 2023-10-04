@@ -108,8 +108,8 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 
 = 1.3.1 =
 
-- Fix: Compatibale with Elementor 3.16.x and Elementor Pro 3.16.x
-- Fix: Compatibale with WordPress 6.3.1
+- Fix: Compatible with Elementor 3.16.x and Elementor Pro 3.16.x
+- Fix: Compatible with WordPress 6.3.1
 
 = 1.3.0 =
 
