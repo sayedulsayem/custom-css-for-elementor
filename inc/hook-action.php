@@ -35,6 +35,8 @@ class Hook_Action {
 
         add_action('elementor/element/parse_css', [$this, 'add_post_css'], 10, 2);
         add_action('elementor/css-file/post/parse', [$this, 'add_page_settings_css']);
+
+        add_action('elementor/frontend/after_enqueue_scripts', [$this, 'add_custom_css_for_editor']);
     }
 
     /**
@@ -164,7 +166,7 @@ class Hook_Action {
             '_custom_css_f_ele_notice',
             [
                 'type' => Controls_Manager::RAW_HTML,
-                'raw' => esc_html__('CSS will not reflect in editor panel. You have to save and open preview panel to get output.', 'custom-css-for-elementor'),
+                'raw' => esc_html__('If the CSS is not reflecting in the editor panel or frontend, you need to write a more specific CSS selector.', 'custom-css-for-elementor'),
                 'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
             ]
         );
@@ -249,6 +251,27 @@ class Hook_Action {
         $minified_css = Util::stringify($sanitized_css, ['minify' => true]);
 
         return $minified_css;
+    }
+
+    public function get_script_depends() {
+        return ['editor-css-script'];
+    }
+
+    public function add_custom_css_for_editor() {
+        wp_enqueue_script(
+            'editor-css-script',
+            CUSTOM_CSS_FELE_PLUGIN_URL . 'assets/js/editor-css-script.js',
+            ['elementor-frontend'],
+            CUSTOM_CSS_FELE_VERSION,
+            true
+        );
+        wp_localize_script(
+            'editor-css-script',
+            'modelData',
+            array(
+                'postID' => get_the_ID()
+            )
+        );
     }
 
     /**

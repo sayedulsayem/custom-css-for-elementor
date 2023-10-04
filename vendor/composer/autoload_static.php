@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit270724bb5482e87055342b6e6f8f5826
+class ComposerStaticInit89ceebd147ade89d01e60cb732f065bf
 {
     public static $files = array (
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
@@ -30,6 +30,7 @@ class ComposerStaticInit270724bb5482e87055342b6e6f8f5826
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',
         'UtfNormal\\Utils' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Utils.php',
         'UtfNormal\\Validator' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Validator.php',
@@ -38,9 +39,9 @@ class ComposerStaticInit270724bb5482e87055342b6e6f8f5826
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit270724bb5482e87055342b6e6f8f5826::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit270724bb5482e87055342b6e6f8f5826::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit270724bb5482e87055342b6e6f8f5826::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit89ceebd147ade89d01e60cb732f065bf::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit89ceebd147ade89d01e60cb732f065bf::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit89ceebd147ade89d01e60cb732f065bf::$classMap;
 
         }, null, ClassLoader::class);
     }
