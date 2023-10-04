@@ -4,9 +4,9 @@ Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 4.7
 Tested up to: 6.3.1
 Requires PHP: 5.6
-Stable tag: 1.3.1
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+Stable tag: 2.0.0
+License: GPL v3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 
 This plugin helps you to push custom CSS in any native Elementor widget. While designing widgets for Elementor, we often face a minimal choice when it comes to style control. This addon solves that problem.
@@ -18,14 +18,11 @@ Custom CSS for Elementor is a handy tool for writing CSS codes within different 
 
 See the plugin's GitHub repository [Custom CSS for Elementor](https://github.com/sayedulsayem/custom-css-for-elementor)
 
-### ⚠️ **Limitation**
+## 📢 Big Announcement -
 
-Currently, It is working only on Elementor's preview page. It is not working on Elementor's editor panel. You will have to write CSS on the editing panel but save it and go to the preview page to see the output.
+After getting several requests we have added live preview mode while styling with CSS. Now you can see the reflection instantly. No hassle of continual preview checks in the front end. 
 
-* In Elementor's editor panel ❌
-* In Elementor's preview panel/ page ✔️
-* In Frontend view ✔️
-* In Public view of the page/ post ✔️
+Enjoy styling with CSS without any hassle. 
 
 ### **Required Tools**
 
@@ -105,6 +102,10 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 7. Mobile preview with input CSS.
 
 == Changelog ==
+
+= 2.0.0 =
+
+- New: Live CSS generate on editor panel while typing.
 
 = 1.3.1 =
 

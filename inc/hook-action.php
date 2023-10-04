@@ -67,7 +67,7 @@ class Hook_Action {
         $element->start_controls_tab(
             '_custom_css_desktop',
             [
-                'label' => '<span class="eicon-device-desktop" title="Desktop"></span>',
+                'label' => '<span class="eicon-device-desktop" title="' . esc_html__('Desktop', 'custom-css-for-elementor') . '"></span>',
             ]
         );
 
@@ -96,7 +96,7 @@ class Hook_Action {
         $element->start_controls_tab(
             '_custom_css_tablet',
             [
-                'label' => '<span class="eicon-device-tablet" title="Tablet"></span>',
+                'label' => '<span class="eicon-device-tablet" title="' . esc_html__('Tablet', 'custom-css-for-elementor') . '"></span>',
             ]
         );
 
@@ -126,7 +126,7 @@ class Hook_Action {
         $element->start_controls_tab(
             '_custom_css_mobile',
             [
-                'label' => '<span class="eicon-device-mobile" title="Mobile"></span>',
+                'label' => '<span class="eicon-device-mobile" title="' . esc_html__('Mobile', 'custom-css-for-elementor') . '"></span>',
             ]
         );
 
