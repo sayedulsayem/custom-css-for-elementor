@@ -1,0 +1,5 @@
+{
+    "require": {
+        "wikimedia/css-sanitizer": "^3.0"
+    }
+}
