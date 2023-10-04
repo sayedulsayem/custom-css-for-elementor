@@ -2,9 +2,9 @@
 Contributors: sayedulsayem, ikamal, gtarafdarr
 Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 4.7
-Tested up to: 6.2.2
+Tested up to: 6.3.1
 Requires PHP: 5.6
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -105,6 +105,11 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 7. Mobile preview with input CSS.
 
 == Changelog ==
+
+= 1.3.1 =
+
+- Fix: Compatibale with Elementor 3.16.x and Elementor Pro 3.16.x
+- Fix: Compatibale with WordPress 6.3.1
 
 = 1.3.0 =
 
