@@ -1,8 +1,8 @@
 === Custom CSS for Elementor ===
 Contributors: sayedulsayem, ikamal, gtarafdarr
 Tags: elementor, css, custom css, responsive css, elementor addons
-Requires at least: 4.7
-Tested up to: 6.3.1
+Requires at least: 5.0
+Tested up to: 6.3.2
 Requires PHP: 5.6
 Stable tag: 2.0.0
 License: GPL v3 or later
@@ -105,7 +105,7 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 
 = 2.0.0 =
 
-- New: Live CSS generate on editor panel while typing.
+- New: Live CSS generate on editor panel while writing CSS.
 
 = 1.3.1 =
 

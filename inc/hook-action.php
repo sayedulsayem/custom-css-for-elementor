@@ -259,12 +259,21 @@ class Hook_Action {
 
     public function add_custom_css_for_editor() {
         wp_enqueue_script(
+            'purify',
+            CUSTOM_CSS_FELE_PLUGIN_URL . 'assets/js/purify.min.js',
+            [],
+            '3.0.6',
+            true
+        );
+
+        wp_enqueue_script(
             'editor-css-script',
             CUSTOM_CSS_FELE_PLUGIN_URL . 'assets/js/editor-css-script.js',
-            ['elementor-frontend'],
+            ['elementor-frontend', 'purify'],
             CUSTOM_CSS_FELE_VERSION,
             true
         );
+
         wp_localize_script(
             'editor-css-script',
             'modelData',
