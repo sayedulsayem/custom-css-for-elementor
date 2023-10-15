@@ -1,16 +1,15 @@
 # Custom CSS for Elementor
 
+This plugin helps you to push custom CSS in any native Elementor widget. While designing widgets for Elementor, we often face a minimal choice when it comes to style control. This addon solves that problem.
+
 ## Description
 Custom CSS for Elementor is a handy tool for writing CSS codes within different devices like Desktops, Tablets & Mobile for Elementor Widgets. It will help you to not bother with writing media queries several times. Custom CSS for Elementor plugin comes with the default media query system.
 
-### ⚠️ Limitation
+## 📢 Big Announcement -
 
-Currently, It is working only on Elementor's preview page. It is not working on Elementor's editor panel. You will have to write CSS on the editing panel but save it and go to the preview page to see the output.
+After getting several requests we have added live preview mode while styling with CSS. Now you can see the reflection instantly. No hassle of continual preview checks in the front end. 
 
-* In Elementor's editor panel ❌
-* In Elementor's preview panel/ page ✔️
-* In Frontend view ✔️
-* In Public view of the page/ post ✔️
+Enjoy styling with CSS without any hassle.
 
 ### Required Tools
 
@@ -74,23 +73,6 @@ For a more detailed explanation, check out the following [documentation](https:/
 ##### Is there any security thread after activating this plugin?
 
 ###### No. This plugin is highly secure. It will sanitize user input so that the user can't face any scripting attack.
-
-
-## Changelog
-##### 1.3.0
-
-- New: Added support for the Flexbox Container.
-
-##### 1.2.0
-- New: Support for the Column.
-- New: Support for the Section.
-
-##### 1.1.0
-- Fix: CSS input UI change and clean.
-- Fix: CSS rules adjusted with normal CSS workflow.
-
-##### 1.0.0 (19-10-2021)
-* Initial release.
 
 ## Links
 

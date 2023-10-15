@@ -1,0 +1,103 @@
+# Copyright (C) 2023 sayedulsayem
+# This file is distributed under the GPL v3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom CSS for Elementor 2.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-css-for-elementor\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-10-15T14:06:07+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: custom-css-for-elementor\n"
+
+#. Plugin Name of the plugin
+#: inc/hook-action.php:58
+#: plugin.php:97
+#: plugin.php:115
+#: plugin.php:133
+msgid "Custom CSS for Elementor"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/custom-css-for-elementor/"
+msgstr ""
+
+#. Description of the plugin
+msgid "A lightweight plugin that open an option to add custom CSS code for each device (desktop, tablets, mobiles) by elementor widgets."
+msgstr ""
+
+#. Author of the plugin
+msgid "sayedulsayem"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://sayedulsayem.com/"
+msgstr ""
+
+#: inc/hook-action.php:70
+msgid "Desktop"
+msgstr ""
+
+#: inc/hook-action.php:77
+#: inc/hook-action.php:85
+msgid "Custom CSS"
+msgstr ""
+
+#: inc/hook-action.php:99
+msgid "Tablet"
+msgstr ""
+
+#: inc/hook-action.php:106
+#: inc/hook-action.php:115
+msgid "Custom CSS (Tablet)"
+msgstr ""
+
+#: inc/hook-action.php:129
+msgid "Mobile"
+msgstr ""
+
+#: inc/hook-action.php:136
+#: inc/hook-action.php:145
+msgid "Custom CSS (Mobile)"
+msgstr ""
+
+#: inc/hook-action.php:159
+msgid "Use \"selector\" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector"
+msgstr ""
+
+#: inc/hook-action.php:169
+msgid "If the CSS is not reflecting in the editor panel or frontend, you need to write a more specific CSS selector."
+msgstr ""
+
+#: plugin.php:87
+msgid "Activate Elementor"
+msgstr ""
+
+#: plugin.php:90
+msgid "Install Elementor"
+msgstr ""
+
+#. translators: 1: Plugin name 2: Elementor
+#: plugin.php:96
+msgid "\"%1$s\" requires \"%2$s\" to be installed and activated. %3$s"
+msgstr ""
+
+#: plugin.php:98
+#: plugin.php:116
+msgid "Elementor"
+msgstr ""
+
+#. translators: 1: Plugin name 2: Elementor 3: Required Elementor version
+#. translators: 1: Plugin name 2: PHP 3: Required PHP version
+#: plugin.php:114
+#: plugin.php:132
+msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
+msgstr ""
+
+#: plugin.php:134
+msgid "PHP"
+msgstr ""
