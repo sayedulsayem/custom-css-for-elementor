@@ -167,6 +167,6 @@
             "install-path": "../wikimedia/utfnormal"
         }
     ],
-    "dev": true,
+    "dev": false,
     "dev-package-names": []
 }

@@ -1,20 +1,20 @@
 <?php return array(
     'root' => array(
-        'name' => '__root__',
+        'name' => 'sayedulsayem/custom-css-for-elementor',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'a6aae11540b676b742465a618c7174ef4c1c89b6',
-        'type' => 'library',
+        'reference' => '5fcae4d23cdd7a758755f26b4ea68164d64073d1',
+        'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
-        '__root__' => array(
+        'sayedulsayem/custom-css-for-elementor' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'a6aae11540b676b742465a618c7174ef4c1c89b6',
-            'type' => 'library',
+            'reference' => '5fcae4d23cdd7a758755f26b4ea68164d64073d1',
+            'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,

@@ -20,6 +20,7 @@ class Hook_Action {
      * @var Singleton The reference the *Singleton* instance of this class
      */
     public static $instance;
+    public $default_breakpoints;
 
     /**
      * this class initialize function
@@ -27,6 +28,12 @@ class Hook_Action {
      * @return void
      */
     public function init() {
+
+        $this->default_breakpoints = [
+            'tablet' => 768,
+            'mobile' => 425
+        ];
+
         add_action('elementor/element/common/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
         add_action('elementor/element/section/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
         add_action('elementor/element/column/_section_responsive/after_section_end', [$this, 'register_controls'], 10, 2);
@@ -232,9 +239,11 @@ class Hook_Action {
             return;
         }
 
+        $this->default_breakpoints = apply_filters('custom_css_for_elementor_breakpoints', $this->default_breakpoints);
+
         $custom_css .= ((!empty($custom_css_desktop)) ? $custom_css_desktop : "");
-        $custom_css .= ((!empty($custom_css_tablet)) ? " @media (max-width: 768px) { " . $custom_css_tablet . "}" : "");
-        $custom_css .= ((!empty($custom_css_mobile)) ? " @media (max-width: 425px) { " . $custom_css_mobile . "}" : "");
+        $custom_css .= ((!empty($custom_css_tablet)) ? ' @media (max-width: ' . $this->default_breakpoints['tablet'] . 'px) { ' . $custom_css_tablet . '}' : '');
+        $custom_css .= ((!empty($custom_css_mobile)) ? ' @media (max-width: ' . $this->default_breakpoints['mobile'] . 'px) { ' . $custom_css_mobile . '}' : '');
 
         if (empty($custom_css)) {
             return;
@@ -274,12 +283,15 @@ class Hook_Action {
             true
         );
 
+        $this->default_breakpoints = apply_filters('custom_css_for_elementor_breakpoints', $this->default_breakpoints);
+
         wp_localize_script(
             'editor-css-script',
             'modelData',
-            array(
-                'postID' => get_the_ID()
-            )
+            [
+                'postID' => get_the_ID(),
+                'breakpoints' => $this->default_breakpoints
+            ]
         );
     }
 

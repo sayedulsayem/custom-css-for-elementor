@@ -11,8 +11,8 @@ jQuery(window).on('elementor/frontend/init', function () {
       customCssMobile = model.get('settings').get('_custom_css_f_ele_css_mobile');
 
     customCss += customCssDesktop ? customCssDesktop : '';
-    customCss += customCssTablet ? ' @media (max-width: 768px) { ' + customCssTablet + '}' : '';
-    customCss += customCssMobile ? ' @media (max-width: 425px) { ' + customCssMobile + '}' : '';
+    customCss += customCssTablet ? ' @media (max-width: ' + modelData.breakpoints.tablet + 'px) { ' + customCssTablet + '}' : '';
+    customCss += customCssMobile ? ' @media (max-width: ' + modelData.breakpoints.mobile + 'px) { ' + customCssMobile + '}' : '';
 
     if (!customCss) {
       return;

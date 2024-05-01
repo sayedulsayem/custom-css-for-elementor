@@ -92,7 +92,7 @@ final class Plugin {
         }
 
         $message = sprintf(
-            /* translators: 1: Plugin name 2: Elementor */
+            /* translators: 1: Plugin name 2: Required on 3: Required version*/
             esc_html__('"%1$s" requires "%2$s" to be installed and activated. %3$s', 'custom-css-for-elementor'),
             '<strong>' . esc_html__('Custom CSS for Elementor', 'custom-css-for-elementor') . '</strong>',
             '<strong>' . esc_html__('Elementor', 'custom-css-for-elementor') . '</strong>',
@@ -110,7 +110,7 @@ final class Plugin {
     public function admin_notice_minimum_elementor_version() {
 
         $message = sprintf(
-            /* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
+            /* translators: 1: Plugin name 2: Required on 3: Required version */
             esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'custom-css-for-elementor'),
             '<strong>' . esc_html__('Custom CSS for Elementor', 'custom-css-for-elementor') . '</strong>',
             '<strong>' . esc_html__('Elementor', 'custom-css-for-elementor') . '</strong>',
@@ -128,7 +128,7 @@ final class Plugin {
     public function admin_notice_minimum_php_version() {
 
         $message = sprintf(
-            /* translators: 1: Plugin name 2: PHP 3: Required PHP version */
+            /* translators: 1: Plugin name 2: Required on 3: Required version */
             esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'custom-css-for-elementor'),
             '<strong>' . esc_html__('Custom CSS for Elementor', 'custom-css-for-elementor') . '</strong>',
             '<strong>' . esc_html__('PHP', 'custom-css-for-elementor') . '</strong>',

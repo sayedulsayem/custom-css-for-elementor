@@ -1,10 +1,14 @@
 === Custom CSS for Elementor ===
+Plugin Name: Custom CSS for Elementor
+Version: 2.1.0
+Author: Sayedul Sayem
+Author URI: https://sayedulsayem.com/
 Contributors: sayedulsayem, ikamal, gtarafdarr
 Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 5.0
-Tested up to: 6.3.2
+Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -56,6 +60,39 @@ As the essential tool, we have shared with you. But in short, here are the other
 * We prepared this tool by maintaining a World-class safety methodology. Also, we have run the malicious test, and it passed all the tests. 
 * It works with any Elementor widget and other third-party Elementor addons widgets too.
 
+### 💻 How to Change Breakpoints in WordPress
+To modify breakpoints for tablet and mobile devices in WordPress, you can add custom code to your theme's `functions.php` file. Breakpoints determine when your website layout switches between different screen sizes, ensuring optimal display across devices.
+
+#### Changing Tablet Breakpoint
+To adjust the breakpoint for tablets, follow these steps:
+
+1. Open your WordPress theme's `functions.php` file.
+2. Add the following PHP code snippet:
+
+```php
+add_filter( 'custom_css_for_elementor_breakpoints' , function( $default_breakpoints ) {
+	$default_breakpoints['tablet'] = 768; // change this value
+	return $default_breakpoints;
+}, 20, 1);
+```
+3. Save the file.
+
+#### Changing Mobile Breakpoint
+To customize the breakpoint for mobile devices, use the following instructions:
+
+1. Navigate to your theme's `functions.php` file.
+2. Insert the following PHP code:
+
+```php
+add_filter( 'custom_css_for_elementor_breakpoints' , function( $default_breakpoints ) {
+	$default_breakpoints['mobile'] = 425; // change this value
+	return $default_breakpoints;
+}, 20, 1);
+```
+3. Save the changes.
+
+By adjusting these breakpoints, you can fine-tune your website's responsiveness and ensure a seamless viewing experience across various devices.
+
 
 ### **PRIVACY POLICY**
 
@@ -102,6 +139,10 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 7. Mobile preview with input CSS.
 
 == Changelog ==
+
+= 2.1.0 =
+
+- New: Filter added for changing breakpoints.
 
 = 2.0.0 =
 
