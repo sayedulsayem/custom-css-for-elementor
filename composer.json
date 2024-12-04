@@ -1,9 +1,17 @@
 {
-    "name": "sayedulsayem/custom-css-for-elementor",
-    "description": "A lightweight plugin that open an option to add custom CSS code for each device (desktop, tablets, mobiles) by elementor widgets.",
-    "license": "GPL-3.0+",
-    "type": "wordpress-plugin",
-    "require": {
-        "wikimedia/css-sanitizer": "^3.0"
-    }
+	"name": "sayedulsayem/custom-css-for-elementor",
+	"description": "A lightweight plugin that open an option to add custom CSS code for each device (desktop, tablets, mobiles) by elementor widgets.",
+	"license": "GPL-3.0+",
+	"type": "wordpress-plugin",
+	"scripts": {
+		"dev": [
+			"@composer install"
+		],
+		"build": [
+			"@composer --no-plugins --no-interaction install --no-scripts --no-dev"
+		]
+	},
+	"require": {
+		"wikimedia/css-sanitizer": "^3.0"
+	}
 }

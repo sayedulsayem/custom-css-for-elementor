@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit89ceebd147ade89d01e60cb732f065bf
+class ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9
 {
     public static $files = array (
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
@@ -39,9 +39,9 @@ class ComposerStaticInit89ceebd147ade89d01e60cb732f065bf
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit89ceebd147ade89d01e60cb732f065bf::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit89ceebd147ade89d01e60cb732f065bf::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit89ceebd147ade89d01e60cb732f065bf::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9::$classMap;
 
         }, null, ClassLoader::class);
     }
