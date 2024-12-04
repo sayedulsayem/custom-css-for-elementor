@@ -12,9 +12,7 @@ Stable tag: 2.1.0
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-
-This plugin helps you to push custom CSS in any native Elementor widget. While designing widgets for Elementor, we often face a minimal choice when it comes to style control. This addon solves that problem.
-
+This plugin helps you push custom CSS in any native Elementor widget, solving style control limitations.
 
 == Description ==
 
@@ -69,7 +67,7 @@ To adjust the breakpoint for tablets, follow these steps:
 1. Open your WordPress theme's `functions.php` file.
 2. Add the following PHP code snippet:
 
-```php
+```
 add_filter( 'custom_css_for_elementor_breakpoints' , function( $default_breakpoints ) {
 	$default_breakpoints['tablet'] = 768; // change this value
 	return $default_breakpoints;
@@ -83,7 +81,7 @@ To customize the breakpoint for mobile devices, use the following instructions:
 1. Navigate to your theme's `functions.php` file.
 2. Insert the following PHP code:
 
-```php
+```
 add_filter( 'custom_css_for_elementor_breakpoints' , function( $default_breakpoints ) {
 	$default_breakpoints['mobile'] = 425; // change this value
 	return $default_breakpoints;
