@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Custom CSS for Elementor
  * Plugin URI: https://wordpress.org/plugins/custom-css-for-elementor/
- * Description: A lightweight plugin that open an option to add custom CSS code for each device (desktop, tablets, mobiles) by elementor widgets. 
+ * Description: A lightweight plugin that open an option to add custom CSS code for each device (desktop, tablets, mobiles) by elementor widgets.
  * Version: 2.1.0
  * Requires at least: 5.0
  * Requires PHP: 7.4
@@ -12,13 +12,12 @@
  * Domain Path: /i18n/
  * License: GPL v3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Elementor tested up to: 3.21
- * Elementor Pro tested up to: 3.21
+ * Elementor tested up to: 3.25
+ * Elementor Pro tested up to: 3.25
  */
 
-
 // If this file is called directly, abort.
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 // include the autoloader file
 require 'vendor/autoload.php';
@@ -29,6 +28,6 @@ require 'plugin.php';
 /**
  * load plugin after initialize wordpress core
  */
-add_action('plugins_loaded', function () {
-    Custom_Css_FEle\Plugin::instance()->init();
-});
+add_action( 'plugins_loaded', function () {
+	Custom_Css_FEle\Plugin::instance()->init();
+} );

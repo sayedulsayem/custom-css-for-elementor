@@ -3,7 +3,7 @@
         'name' => 'sayedulsayem/custom-css-for-elementor',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '5fcae4d23cdd7a758755f26b4ea68164d64073d1',
+        'reference' => 'bbd25cb5ee020f2758bb911f1ce0563dfbf0e50e',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'sayedulsayem/custom-css-for-elementor' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '5fcae4d23cdd7a758755f26b4ea68164d64073d1',
+            'reference' => 'bbd25cb5ee020f2758bb911f1ce0563dfbf0e50e',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
