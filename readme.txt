@@ -1,14 +1,14 @@
 === Custom CSS for Elementor ===
 Plugin Name: Custom CSS for Elementor
-Version: 2.1.0
+Version: 2.1.1
 Author: Sayedul Sayem
 Author URI: https://sayedulsayem.com/
 Contributors: sayedulsayem, ikamal, gtarafdarr
 Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
