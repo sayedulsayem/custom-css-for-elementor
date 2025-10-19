@@ -1,14 +1,14 @@
 === Custom CSS for Elementor ===
 Plugin Name: Custom CSS for Elementor
-Version: 2.1.0
+Version: 2.1.1
 Author: Sayedul Sayem
 Author URI: https://sayedulsayem.com/
 Contributors: sayedulsayem, ikamal, gtarafdarr
 Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -138,33 +138,30 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 
 == Changelog ==
 
-= 2.1.0 =
+= 2.1.1 =
+- Fix: Compatible with Elementor 3.32.x and Elementor Pro 3.32.x
+- Fix: Compatible with WordPress 6.8.x
 
+= 2.1.0 =
 - New: Filter added for changing breakpoints.
 
 = 2.0.0 =
-
 - New: Live CSS generate on editor panel while writing CSS.
 
 = 1.3.1 =
-
 - Fix: Compatible with Elementor 3.16.x and Elementor Pro 3.16.x
 - Fix: Compatible with WordPress 6.3.1
 
 = 1.3.0 =
-
 - New: Added support for the Flexbox Container.
 
 = 1.2.0 =
-
 - New: Support for the Column.
 - New: Support for the Section.
 
 = 1.1.0 =
-
 - Fix: CSS input UI change and clean.
 - Fix: CSS rules adjusted with normal CSS workflow.
 
 = 1.0.0 (19-10-2021) =
-
 * Initial release.
