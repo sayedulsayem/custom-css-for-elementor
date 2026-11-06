@@ -25,9 +25,9 @@
 	var STYLE_TAG_ID = 'custom-css-for-elementor-atomic';
 
 	var FIELDS = [
-		{ bind: '_custom_css_f_ele_css_desktop', labelKey: 'desktop', descriptionKey: 'hint' },
-		{ bind: '_custom_css_f_ele_css_tablet', labelKey: 'tablet' },
-		{ bind: '_custom_css_f_ele_css_mobile', labelKey: 'mobile' }
+		{ bind: '_custom_css_f_ele_css_desktop', labelKey: 'desktop', iconClass: 'eicon-device-desktop' },
+		{ bind: '_custom_css_f_ele_css_tablet', labelKey: 'tablet', iconClass: 'eicon-device-tablet' },
+		{ bind: '_custom_css_f_ele_css_mobile', labelKey: 'mobile', iconClass: 'eicon-device-mobile' }
 	];
 
 	var PROPS_KEYS = FIELDS.map(function (field) {
@@ -442,26 +442,97 @@
 
 		initPreviewSync();
 
+		var editorUi = getV2('editorUi');
+
 		function CustomCssFields() {
+			var tabState = ReactLib.useState('_custom_css_f_ele_css_desktop');
+			var activeBind = tabState[0];
+			var setActiveBind = tabState[1];
+			var activeField = FIELDS.filter(function (field) {
+				return field.bind === activeBind;
+			})[0] || FIELDS[0];
+
 			return ReactLib.createElement(
 				ReactLib.Fragment,
 				null,
-				FIELDS.map(function (field) {
-					return ReactLib.createElement(panel.SettingsControl, {
+				// Usage description, mirroring the classic RAW_HTML descriptor.
+				ReactLib.createElement('div', {
+					style: {
+						fontSize: '12px',
+						lineHeight: '1.5',
+						color: 'var(--e-a-color-txt-muted, #a4afb7)',
+						marginBottom: '8px'
+					}
+				}, t('description')),
+				// Device tabs, mirroring the classic desktop/tablet/mobile tabs.
+				ReactLib.createElement('div', {
+					role: 'tablist',
+					style: {
+						display: 'flex',
+						gap: '4px',
+						marginBottom: '8px',
+						borderBottom: '1px solid var(--e-a-color-divider, #d5dadf)'
+					}
+				}, FIELDS.map(function (field) {
+					var isActive = field.bind === activeBind;
+
+					return ReactLib.createElement('button', {
 						key: field.bind,
-						control: {
-							type: 'control',
-							value: {
-								type: CONTROL_TYPE,
-								bind: field.bind,
-								label: t(field.labelKey),
-								description: field.descriptionKey ? t(field.descriptionKey) : null,
-								props: {},
-								meta: null
-							}
+						type: 'button',
+						role: 'tab',
+						'aria-selected': isActive,
+						title: t(field.labelKey),
+						onClick: function () {
+							setActiveBind(field.bind);
+						},
+						style: {
+							display: 'inline-flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							width: '32px',
+							height: '32px',
+							border: 'none',
+							background: 'transparent',
+							cursor: 'pointer',
+							color: isActive
+								? 'var(--e-a-color-txt-accent, #39b54a)'
+								: 'var(--e-a-color-txt-muted, #a4afb7)',
+							borderBottom: isActive
+								? '2px solid var(--e-a-color-txt-accent, #39b54a)'
+								: '2px solid transparent',
+							marginBottom: '-1px'
 						}
-					});
-				})
+					}, ReactLib.createElement('i', {
+						className: 'eicon ' + field.iconClass,
+						'aria-hidden': 'true'
+					}));
+				})),
+				// Only the active device's field is mounted.
+				ReactLib.createElement(panel.SettingsControl, {
+					key: activeField.bind,
+					control: {
+						type: 'control',
+						value: {
+							type: CONTROL_TYPE,
+							bind: activeField.bind,
+							label: t(activeField.labelKey),
+							description: null,
+							props: {},
+							meta: null
+						}
+					}
+				}),
+				// Info notice, mirroring the classic panel alert.
+				editorUi && editorUi.InfoAlert
+					? ReactLib.createElement(editorUi.InfoAlert, null, t('notice'))
+					: ReactLib.createElement('div', {
+						style: {
+							fontSize: '12px',
+							lineHeight: '1.5',
+							color: 'var(--e-a-color-txt-muted, #a4afb7)',
+							marginTop: '8px'
+						}
+					}, t('notice'))
 			);
 		}
 

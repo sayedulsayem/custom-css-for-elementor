@@ -254,7 +254,8 @@ class Hook_Action {
 				'desktop'     => esc_html__( 'Custom CSS (Desktop)', 'custom-css-for-elementor' ),
 				'tablet'      => esc_html__( 'Custom CSS (Tablet)', 'custom-css-for-elementor' ),
 				'mobile'      => esc_html__( 'Custom CSS (Mobile)', 'custom-css-for-elementor' ),
-				'hint'        => esc_html__( 'Use "selector" to target the element itself, or "selector .child" for elements inside it. Example: selector { color: red; }', 'custom-css-for-elementor' ),
+				'description' => esc_html__( 'Use "selector" to target the element itself, or "selector .child" for elements inside it. Examples: selector {color: red;} // For the element itself, selector .child-element {margin: 10px;} // For child elements, .my-class {text-align: center;} // Or use any custom selector', 'custom-css-for-elementor' ),
+				'notice'      => esc_html__( 'If the CSS is not reflecting in the editor panel or frontend, you need to write a more specific CSS selector.', 'custom-css-for-elementor' ),
 				'postID'      => get_the_ID(),
 				'breakpoints' => $this->default_breakpoints,
 			]
