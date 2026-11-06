@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -13,7 +15,7 @@ use Wikimedia\CSS\Objects\ComponentValueList;
  */
 class CheckedMatcher extends Matcher {
 	/** @var Matcher */
-	private $matcher = null;
+	private $matcher;
 
 	/** @var callable */
 	protected $check;
@@ -31,7 +33,7 @@ class CheckedMatcher extends Matcher {
 	/** @inheritDoc */
 	protected function generateMatches( ComponentValueList $values, $start, array $options ) {
 		foreach ( $this->matcher->generateMatches( $values, $start, $options ) as $match ) {
-			if ( call_user_func( $this->check, $values, $match, $options ) ) {
+			if ( ( $this->check )( $values, $match, $options ) ) {
 				yield $this->makeMatch( $values, $start, $match->getNext(), $match );
 			}
 		}

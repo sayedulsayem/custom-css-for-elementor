@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,12 +8,13 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\CSSFunction;
 use Wikimedia\CSS\Objects\Token;
 
 /**
- * Matcher that matches a CSSFunction for a url or a T_URL token
+ * Matcher that matches a CSSFunction for a URL function or a T_URL token
  */
 class UrlMatcher extends FunctionMatcher {
 	/** @var callable|null */
@@ -24,11 +27,11 @@ class UrlMatcher extends FunctionMatcher {
 	 *  - modifierMatcher: (Matcher) Matcher for URL modifiers. The default is
 	 *    a NothingMatcher.
 	 */
-	public function __construct( callable $urlCheck = null, array $options = [] ) {
+	public function __construct( ?callable $urlCheck = null, array $options = [] ) {
 		if ( isset( $options['modifierMatcher'] ) ) {
 			$modifierMatcher = $options['modifierMatcher'];
 			if ( !$modifierMatcher instanceof Matcher ) {
-				throw new \InvalidArgumentException( 'modifierMatcher must be a Matcher' );
+				throw new InvalidArgumentException( 'modifierMatcher must be a Matcher' );
 			}
 		} else {
 			$modifierMatcher = new NothingMatcher;
@@ -40,7 +43,12 @@ class UrlMatcher extends FunctionMatcher {
 		] );
 
 		$this->urlCheck = $urlCheck;
-		parent::__construct( 'url', $funcContents );
+		parent::__construct(
+			static function ( $name ) {
+				return in_array( strtolower( $name ), [ 'url', 'src' ], true );
+			},
+			$funcContents
+		);
 	}
 
 	/**
@@ -60,7 +68,7 @@ class UrlMatcher extends FunctionMatcher {
 		$cv = $values[$start] ?? null;
 		if ( $cv instanceof Token && $cv->type() === Token::T_URL ) {
 			$url = $cv->value();
-			if ( !$this->urlCheck || call_user_func( $this->urlCheck, $url, [] ) ) {
+			if ( !$this->urlCheck || ( $this->urlCheck )( $url, [] ) ) {
 				$match = new GrammarMatch( $values, $start, 1, 'url' );
 				yield $this->makeMatch( $values, $start, $this->next( $values, $start, $options ), $match );
 			}
@@ -74,7 +82,7 @@ class UrlMatcher extends FunctionMatcher {
 			$modifiers = [];
 			foreach ( $match->getCapturedMatches() as $submatch ) {
 				$cvs = $submatch->getValues();
-				if ( $submatch->getName() === 'url' && $cvs[0] instanceof Token ) {
+				if ( $cvs[0] instanceof Token && $submatch->getName() === 'url' ) {
 					$url = $cvs[0]->value();
 				} elseif ( $submatch->getName() === 'modifier' ) {
 					if ( $cvs[0] instanceof CSSFunction ) {
@@ -84,7 +92,7 @@ class UrlMatcher extends FunctionMatcher {
 					}
 				}
 			}
-			if ( $url && ( !$this->urlCheck || call_user_func( $this->urlCheck, $url, $modifiers ) ) ) {
+			if ( $url && ( !$this->urlCheck || ( $this->urlCheck )( $url, $modifiers ) ) ) {
 				yield $match;
 			}
 		}

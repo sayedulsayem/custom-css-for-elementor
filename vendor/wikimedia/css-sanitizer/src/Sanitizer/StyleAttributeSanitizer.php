@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -43,17 +45,17 @@ class StyleAttributeSanitizer extends Sanitizer {
 		$propertySanitizer = new StylePropertySanitizer( $matcherFactory );
 
 		// StyleAttributeSanitizer brings it all together
-		$sanitizer = new StyleAttributeSanitizer( $propertySanitizer );
-
-		return $sanitizer;
+		return new StyleAttributeSanitizer( $propertySanitizer );
 	}
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
 		if ( !$object instanceof DeclarationList ) {
+			'@phan-var CSSObject $object';
 			$this->sanitizationError( 'expected-declaration-list', $object );
 			return null;
 		}
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $this->sanitizeList( $this->propertySanitizer, $object );
 	}
 

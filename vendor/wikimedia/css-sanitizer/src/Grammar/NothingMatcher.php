@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,6 +8,7 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use EmptyIterator;
 use Wikimedia\CSS\Objects\ComponentValueList;
 
 /**
@@ -14,6 +17,6 @@ use Wikimedia\CSS\Objects\ComponentValueList;
 class NothingMatcher extends Matcher {
 	/** @inheritDoc */
 	protected function generateMatches( ComponentValueList $values, $start, array $options ) {
-		return new \EmptyIterator;
+		return new EmptyIterator;
 	}
 }

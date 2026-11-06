@@ -7,6 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'DelayedTargetValidation' => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/DelayedTargetValidation.php',
+    'Filter\\FilterException' => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterException.php',
+    'Filter\\FilterFailedException' => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterFailedException.php',
+    'NoDiscard' => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/NoDiscard.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',
     'UtfNormal\\Utils' => $vendorDir . '/wikimedia/utfnormal/src/Utils.php',
     'UtfNormal\\Validator' => $vendorDir . '/wikimedia/utfnormal/src/Validator.php',

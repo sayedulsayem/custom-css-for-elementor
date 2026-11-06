@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -68,8 +70,7 @@ class NamespaceAtRuleSanitizer extends RuleSanitizer {
 			}
 			return null;
 		}
-		$object = $this->fixPreludeWhitespace( $object, true );
-
-		return $object;
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
+		return $this->fixPreludeWhitespace( $object, true );
 	}
 }

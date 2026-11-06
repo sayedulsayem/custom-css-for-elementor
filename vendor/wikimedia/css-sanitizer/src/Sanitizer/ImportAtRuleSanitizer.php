@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -7,9 +9,11 @@
 namespace Wikimedia\CSS\Sanitizer;
 
 use Wikimedia\CSS\Grammar\Alternative;
+use Wikimedia\CSS\Grammar\FunctionMatcher;
 use Wikimedia\CSS\Grammar\Juxtaposition;
 use Wikimedia\CSS\Grammar\Matcher;
 use Wikimedia\CSS\Grammar\MatcherFactory;
+use Wikimedia\CSS\Grammar\Quantifier;
 use Wikimedia\CSS\Objects\AtRule;
 use Wikimedia\CSS\Objects\CSSObject;
 use Wikimedia\CSS\Objects\Rule;
@@ -17,7 +21,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS \@import rule
- * @see https://www.w3.org/TR/2016/CR-css-cascade-3-20160519/#at-import
+ * @see https://www.w3.org/TR/2022/CR-css-cascade-4-20220113/#at-import
  */
 class ImportAtRuleSanitizer extends RuleSanitizer {
 
@@ -26,13 +30,24 @@ class ImportAtRuleSanitizer extends RuleSanitizer {
 
 	/**
 	 * @param MatcherFactory $matcherFactory
+	 * @param array $options Additional options:
+	 *  - strict: (bool) Only accept defined syntax in supports(). Default true.
+	 *  - declarationSanitizer: (PropertySanitizer) Check supports() declarations against this
+	 *    Sanitizer.
 	 */
-	public function __construct( MatcherFactory $matcherFactory ) {
+	public function __construct( MatcherFactory $matcherFactory, array $options = [] ) {
+		$declarationSanitizer = $options['declarationSanitizer'] ?? null;
+		$strict = $options['strict'] ?? true;
+
 		$this->matcher = new Juxtaposition( [
 			new Alternative( [
 				$matcherFactory->url( 'css' ),
 				$matcherFactory->urlstring( 'css' ),
 			] ),
+			Quantifier::optional( new FunctionMatcher( 'supports', new Alternative( [
+				$matcherFactory->cssSupportsCondition( $declarationSanitizer, $strict ),
+				$matcherFactory->cssDeclaration( $declarationSanitizer ),
+			] ) ) ),
 			$matcherFactory->cssMediaQueryList(),
 		] );
 	}
@@ -67,8 +82,7 @@ class ImportAtRuleSanitizer extends RuleSanitizer {
 			}
 			return null;
 		}
-		$object = $this->fixPreludeWhitespace( $object, true );
-
-		return $object;
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
+		return $this->fixPreludeWhitespace( $object, true );
 	}
 }

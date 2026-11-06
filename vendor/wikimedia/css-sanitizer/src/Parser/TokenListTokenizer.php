@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,6 +8,7 @@
 
 namespace Wikimedia\CSS\Parser;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Objects\Token;
 use Wikimedia\CSS\Objects\TokenList;
 use Wikimedia\CSS\Util;
@@ -25,14 +28,14 @@ class TokenListTokenizer implements Tokenizer {
 	 * @param Token[]|TokenList $tokens Tokens to return
 	 * @param Token|null $eof Token to copy as EOF
 	 */
-	public function __construct( $tokens, Token $eof = null ) {
+	public function __construct( $tokens, ?Token $eof = null ) {
 		if ( $tokens instanceof TokenList ) {
 			$this->tokens = $tokens->toTokenArray();
 		} elseif ( is_array( $tokens ) ) {
 			Util::assertAllInstanceOf( $tokens, Token::class, '$tokens' );
 			$this->tokens = $tokens;
 		} else {
-			throw new \InvalidArgumentException( '$tokens must be a TokenList or an array of tokens' );
+			throw new InvalidArgumentException( '$tokens must be a TokenList or an array of tokens' );
 		}
 
 		if ( $eof && $eof->type() === Token::T_EOF ) {

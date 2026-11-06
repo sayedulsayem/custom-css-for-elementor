@@ -1,14 +1,14 @@
 === Custom CSS for Elementor ===
 Plugin Name: Custom CSS for Elementor
-Version: 2.1.1
+Version: 2.2.0
 Author: Sayedul Sayem
 Author URI: https://sayedulsayem.com/
 Contributors: sayedulsayem, ikamal, gtarafdarr
 Tags: elementor, css, custom css, responsive css, elementor addons
-Requires at least: 5.0
-Tested up to: 6.8
-Requires PHP: 7.4
-Stable tag: 2.1.1
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 8.2
+Stable tag: 2.2.0
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -37,6 +37,8 @@ First of all, it’s a plug-and-play tool. You will not get any setting page. So
 
 Direction: Edit any Elementor Widget > Advanced Tab > Custom Css for Elementor
 
+Note: For Elementor Atomic Elements (the new atomic widgets/containers), the Custom CSS fields are located in the "Style" tab instead of the "Advanced" tab. On atomic elements, `selector` targets the element itself (for example, an atomic Heading renders as a single `h2` tag), so use `selector { ... }` for the element itself or `selector .child { ... }` for elements inside it.
+
 Note: According to general CSS logic, if you write CSS for a bigger screen (Desktop), it will be automatically implemented on smaller devices chronologically. If you want to change anything for a smaller screen, you have to write different CSS for smaller screens. 
 
 In our Custom CSS for Elementor addon, if you want to add global CSS, just write CSS code in the desktop/global panel, and the code will be automatically implied to the other screen. If you want to change the CSS for Tablets, you have to write different CSS in our Tablet CSS panel. And same goes for mobile devices. If you want to change the CSS for Mobile devices, write different CSS in the Mobile CSS panel of our tool. 
@@ -57,6 +59,7 @@ As the essential tool, we have shared with you. But in short, here are the other
 * You can face lacking options during change style through style control, but our Custom CSS for Elementor Addon will allow you to write CSS to overcome these lackings.
 * We prepared this tool by maintaining a World-class safety methodology. Also, we have run the malicious test, and it passed all the tests. 
 * It works with any Elementor widget and other third-party Elementor addons widgets too.
+* It also supports Elementor Atomic Elements, with Custom CSS available in the "Style" tab.
 
 ### 💻 How to Change Breakpoints in WordPress
 To modify breakpoints for tablet and mobile devices in WordPress, you can add custom code to your theme's `functions.php` file. Breakpoints determine when your website layout switches between different screen sizes, ensuring optimal display across devices.
@@ -137,6 +140,15 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 7. Mobile preview with input CSS.
 
 == Changelog ==
+
+= 2.2.0 =
+- New: Support for Elementor Atomic Elements. Custom CSS is now available in the "Style" tab of atomic widgets and containers (requires the Atomic Widgets experiment to be active).
+- Fix: `aspect-ratio` and other modern CSS properties are no longer stripped from the frontend output.
+- Fix: CSS using `var()` references, such as Elementor global colors (`var(--e-global-color-*)`), now works correctly.
+- Fix: PHP 8.1+ deprecation warnings raised by the bundled CSS sanitizer library.
+- Fix: "Undefined array key" warnings and `trim()` deprecation notices on elements without saved Custom CSS values.
+- Fix: Compatible with Elementor 4.3.x and Elementor Pro 4.3.x
+- Fix: Compatible with WordPress 7.1.x
 
 = 2.1.1 =
 - Fix: Compatible with Elementor 3.32.x and Elementor Pro 3.32.x

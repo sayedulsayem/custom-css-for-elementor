@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,15 +8,19 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Util;
 
 /**
- * Represent a CSS simple block
+ * Represent a CSS simple block, eg. `{ color: red }`
  */
 class SimpleBlock extends ComponentValue {
 
 	/** @var string */
-	protected $startTokenType, $endTokenType;
+	protected $startTokenType;
+
+	/** @var string */
+	protected $endTokenType;
 
 	/** @var ComponentValueList */
 	protected $value;
@@ -25,12 +31,12 @@ class SimpleBlock extends ComponentValue {
 	public function __construct( Token $token ) {
 		$this->endTokenType = static::matchingDelimiter( $token->type() );
 		if ( $this->endTokenType === null ) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				'A SimpleBlock is delimited by either {}, [], or ().'
 			);
 		}
 
-		list( $this->line, $this->pos ) = $token->getPosition();
+		[ $this->line, $this->pos ] = $token->getPosition();
 		$this->startTokenType = $token->type();
 		$this->value = new ComponentValueList();
 	}
@@ -97,7 +103,7 @@ class SimpleBlock extends ComponentValue {
 			new Token( $this->startTokenType, [ 'position' => [ $this->line, $this->pos ] ] ),
 		];
 
-		// Manually looping and appending turns out to be noticably faster than array_merge.
+		// Manually looping and appending turns out to be noticeably faster than array_merge.
 		$tokens = $this->value->toTokenArray();
 		if ( $tokens && $this->startTokenType === Token::T_LEFT_BRACE ) {
 			if ( $tokens[0]->type() !== Token::T_WHITESPACE ) {

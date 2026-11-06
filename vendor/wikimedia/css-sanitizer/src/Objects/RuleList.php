@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -8,12 +10,16 @@ namespace Wikimedia\CSS\Objects;
 
 /**
  * Represent a list of CSS rules
+ * @extends CSSObjectList<Rule>
  */
 class RuleList extends CSSObjectList {
+	/**
+	 * @var string
+	 */
 	protected static $objectType = Rule::class;
 
 	/** @inheritDoc */
-	protected function getSeparator( CSSObject $left, CSSObject $right = null ) {
+	protected function getSeparator( CSSObject $left, ?CSSObject $right = null ) {
 		return $right ? [ new Token( Token::T_WHITESPACE, [ 'significant' => false ] ) ] : [];
 	}
 }

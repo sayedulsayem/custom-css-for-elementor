@@ -12,6 +12,13 @@
 		]
 	},
 	"require": {
-		"wikimedia/css-sanitizer": "^3.0"
-	}
+		"php": ">=8.2",
+		"wikimedia/css-sanitizer": "^6.2"
+	},
+	"authors": [
+		{
+			"name": "Sayedul Sayem",
+			"email": "sayedulsayem@gmail.com"
+		}
+	]
 }

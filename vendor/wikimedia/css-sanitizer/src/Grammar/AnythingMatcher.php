@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,6 +8,8 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use InvalidArgumentException;
+use UnexpectedValueException;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\CSSFunction;
 use Wikimedia\CSS\Objects\SimpleBlock;
@@ -15,7 +19,7 @@ use Wikimedia\CSS\Objects\Token;
  * Matcher that matches anything except bad strings, bad urls, and unmatched
  * left-paren, left-brace, or left-bracket.
  * @warning Be very careful using this!
- * @see https://drafts.csswg.org/css-syntax/#any-value for where this roughly comes from.
+ * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#any-value
  */
 class AnythingMatcher extends Matcher {
 
@@ -44,7 +48,7 @@ class AnythingMatcher extends Matcher {
 		$this->toplevel = !empty( $options['toplevel'] );
 		$this->quantifier = $options['quantifier'] ?? '';
 		if ( !in_array( $this->quantifier, [ '', '+', '*' ], true ) ) {
-			throw new \InvalidArgumentException( 'Invalid quantifier' );
+			throw new InvalidArgumentException( 'Invalid quantifier' );
 		}
 
 		$recurse = !$this->toplevel && $this->quantifier === '*'
@@ -104,7 +108,7 @@ class AnythingMatcher extends Matcher {
 					case Token::T_LEFT_BRACKET:
 						// Should never happen
 						// @codeCoverageIgnoreStart
-						throw new \UnexpectedValueException( "How did a \"{$cv->type()}\" token get here?" );
+						throw new UnexpectedValueException( "How did a \"{$cv->type()}\" token get here?" );
 						// @codeCoverageIgnoreEnd
 
 					default:
