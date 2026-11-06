@@ -147,6 +147,8 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 - Fix: CSS using `var()` references, such as Elementor global colors (`var(--e-global-color-*)`), now works correctly.
 - Fix: PHP 8.1+ deprecation warnings raised by the bundled CSS sanitizer library.
 - Fix: "Undefined array key" warnings and `trim()` deprecation notices on elements without saved Custom CSS values.
+- Fix: Compatible with Elementor 4.3.x and Elementor Pro 4.3.x
+- Fix: Compatible with WordPress 7.1.x
 
 = 2.1.1 =
 - Fix: Compatible with Elementor 3.32.x and Elementor Pro 3.32.x
