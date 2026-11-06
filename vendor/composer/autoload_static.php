@@ -4,33 +4,45 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9
+class ComposerStaticInit0e40708fc020160d1e7d0046d8c2ce70
 {
     public static $files = array (
-        'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
+        '606a39d89246991a373564698c2d8383' => __DIR__ . '/..' . '/symfony/polyfill-php85/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'W' => 
+        'W' =>
         array (
             'Wikimedia\\CSS\\' => 14,
-            'Wikimedia\\AtEase\\' => 17,
+            'Wikimedia\\' => 10,
+        ),
+        'S' =>
+        array (
+            'Symfony\\Polyfill\\Php85\\' => 23,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Wikimedia\\CSS\\' => 
+        'Wikimedia\\CSS\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src',
         ),
-        'Wikimedia\\AtEase\\' => 
+        'Wikimedia\\' =>
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase',
+            0 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+        ),
+        'Symfony\\Polyfill\\Php85\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
         ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'DelayedTargetValidation' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/DelayedTargetValidation.php',
+        'Filter\\FilterException' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterException.php',
+        'Filter\\FilterFailedException' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterFailedException.php',
+        'NoDiscard' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/NoDiscard.php',
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',
         'UtfNormal\\Utils' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Utils.php',
         'UtfNormal\\Validator' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Validator.php',
@@ -39,9 +51,9 @@ class ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita9d747e7eee2bdf6c2dc9ef1b07691e9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0e40708fc020160d1e7d0046d8c2ce70::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0e40708fc020160d1e7d0046d8c2ce70::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0e40708fc020160d1e7d0046d8c2ce70::$classMap;
 
         }, null, ClassLoader::class);
     }

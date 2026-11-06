@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -21,14 +23,14 @@ use Wikimedia\CSS\Objects\Stylesheet;
 use Wikimedia\CSS\Objects\Token;
 
 // Note: While reading the code below, you might find that my calls to
-// consumeToken() don't match what the spec says and I don't ever "reconsume" a
+// consumeToken() don't match what the spec says, and I don't ever "reconsume" a
 // token. It turns out that the spec is overcomplicated and confused with
 // respect to the "current input token" and the "next input token". It turns
 // out things are pretty simple: every "consume an X" is called with the
 // current input token being the first token of X, and returns with the current
 // input token being the last token of X (or EOF if X ends at EOF).
 
-// Also of note is that, since our Tokenizer can only return a stream of tokens
+// Also, of note is that, since our Tokenizer can only return a stream of tokens
 // rather than a stream of component values, the consume functions here only
 // consider tokens. ComponentValueList::toTokenArray() may be used to convert a
 // list of component values to a list of tokens if necessary.
@@ -37,15 +39,19 @@ use Wikimedia\CSS\Objects\Token;
  * Parse CSS into a structure for further processing.
  *
  * This implements the CSS Syntax Module Level 3 candidate recommendation.
- * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/
+ * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/
  *
  * The usual entry points are:
  *  - Parser::parseStylesheet() to parse a stylesheet or the contents of a <style> tag.
  *  - Parser::parseDeclarationList() to parse an inline style attribute
  */
 class Parser {
-	/** Maximum depth of nested ComponentValues */
-	private const CV_DEPTH_LIMIT = 100; // Arbitrary number that seems like it should be enough
+	/**
+	 * Maximum depth of nested ComponentValues
+	 *
+	 * Arbitrary number that seems like it should be enough
+	 */
+	private const CV_DEPTH_LIMIT = 100;
 
 	/** @var Tokenizer */
 	protected $tokenizer;
@@ -99,7 +105,7 @@ class Parser {
 	 * @param Token|null $eof EOF-token
 	 * @return static
 	 */
-	public static function newFromTokens( array $tokens, Token $eof = null ) {
+	public static function newFromTokens( array $tokens, ?Token $eof = null ) {
 		$tokenizer = new TokenListTokenizer( $tokens, $eof );
 		return new static( $tokenizer );
 	}
@@ -150,57 +156,47 @@ class Parser {
 	 * @param array $data Extra data about the error.
 	 */
 	protected function parseError( $tag, Token $token, array $data = [] ) {
-		list( $line, $pos ) = $token->getPosition();
+		[ $line, $pos ] = $token->getPosition();
 		$this->parseErrors[] = array_merge( [ $tag, $line, $pos ], $data );
 	}
 
 	/**
 	 * Parse a stylesheet
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-stylesheet
-	 * @note Per the Editor's Draft, if the first rule is an at-rule named
-	 *  "charset" it will be silently dropped. If you're not using the provided
-	 *  Sanitizer classes to further sanitize the CSS, you'll want to manually
-	 *  filter out any other such rules before stringifying the stylesheet
-	 *  and/or prepend `@charset "utf-8";` after stringifying it.
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-stylesheet
 	 * @return Stylesheet
 	 */
 	public function parseStylesheet() {
-		$this->consumeToken(); // Move to the first token
+		// Move to the first token
+		$this->consumeToken();
 		$list = $this->consumeRuleList( true );
-
-		// Drop @charset per the Editor's Draft
-		if ( isset( $list[0] ) && $list[0] instanceof AtRule &&
-			!strcasecmp( $list[0]->getName(), 'charset' )
-		) {
-			$list->remove( 0 );
-			$list->rewind();
-		}
 
 		return new Stylesheet( $list );
 	}
 
 	/**
 	 * Parse a list of rules
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-list-of-rules
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-list-of-rules
 	 * @return RuleList
 	 */
 	public function parseRuleList() {
-		$this->consumeToken(); // Move to the first token
+		// Move to the first token
+		$this->consumeToken();
 		return $this->consumeRuleList( false );
 	}
 
 	/**
 	 * Parse a rule
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-rule
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-rule
 	 * @return Rule|null
 	 */
 	public function parseRule() {
-		// 1. and 2.
+		// 1.
 		$this->consumeTokenAndWhitespace();
 
-		// 3.
+		// 2.
 		if ( $this->currentToken->type() === Token::T_EOF ) {
-			$this->parseError( 'unexpected-eof', $this->currentToken ); // "return a syntax error"?
+			// "return a syntax error"?
+			$this->parseError( 'unexpected-eof', $this->currentToken );
 			return null;
 		}
 
@@ -213,39 +209,39 @@ class Parser {
 			}
 		}
 
-		// 4.
+		// 3.
 		$this->consumeTokenAndWhitespace();
 
-		// 5.
+		// 4.
 		if ( $this->currentToken->type() === Token::T_EOF ) {
 			return $rule;
-		} else {
-			$this->parseError( 'expected-eof', $this->currentToken ); // "return a syntax error"?
-			return null;
 		}
+
+		// "return a syntax error"?
+		$this->parseError( 'expected-eof', $this->currentToken );
+
+		return null;
 	}
 
 	/**
 	 * Parse a declaration
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-declaration
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-declaration
 	 * @return Declaration|null
 	 */
 	public function parseDeclaration() {
-		// 1. and 2.
+		// 1.
 		$this->consumeTokenAndWhitespace();
 
-		// 3.
+		// 2.
 		if ( $this->currentToken->type() !== Token::T_IDENT ) {
-			$this->parseError( 'expected-ident', $this->currentToken ); // "return a syntax error"?
+			// "return a syntax error"?
+			$this->parseError( 'expected-ident', $this->currentToken );
 			return null;
 		}
 
-		// 4.
-		$declaration = $this->consumeDeclaration();
-
+		// 3.
 		// Declarations always run to EOF, no need to check.
-
-		return $declaration;
+		return $this->consumeDeclaration();
 	}
 
 	/**
@@ -255,62 +251,66 @@ class Parser {
 	 * @return DeclarationList
 	 */
 	public function parseDeclarationList() {
-		$this->consumeToken(); // Move to the first token
+		// Move to the first token
+		$this->consumeToken();
 		return $this->consumeDeclarationOrAtRuleList( false );
 	}
 
 	/**
 	 * Parse a list of declarations and at-rules
 	 * @note This is the entry point the standard calls "parse a list of declarations"
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-list-of-declarations
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-list-of-declarations
 	 * @return DeclarationOrAtRuleList
 	 */
 	public function parseDeclarationOrAtRuleList() {
-		$this->consumeToken(); // Move to the first token
+		// Move to the first token
+		$this->consumeToken();
 		return $this->consumeDeclarationOrAtRuleList();
 	}
 
 	/**
 	 * Parse a (non-whitespace) component value
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-component-value
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-component-value
 	 * @return ComponentValue|null
 	 */
 	public function parseComponentValue() {
-		// 1. and 2.
+		// 1.
 		$this->consumeTokenAndWhitespace();
+
+		// 2.
+		if ( $this->currentToken->type() === Token::T_EOF ) {
+			// "return a syntax error"?
+			$this->parseError( 'unexpected-eof', $this->currentToken );
+			return null;
+		}
 
 		// 3.
-		if ( $this->currentToken->type() === Token::T_EOF ) {
-			$this->parseError( 'unexpected-eof', $this->currentToken ); // "return a syntax error"?
-			return null;
-		}
+		$value = $this->consumeComponentValue();
 
 		// 4.
-		$value = $this->consumeComponentValue();
-		// The spec says to return a syntax error if nothing is returned, but
-		// that can never happen and the Editor's Draft removed that language.
-
-		// 5.
 		$this->consumeTokenAndWhitespace();
 
-		// 6.
+		// 5.
 		if ( $this->currentToken->type() === Token::T_EOF ) {
 			return $value;
-		} else {
-			$this->parseError( 'expected-eof', $this->currentToken ); // "return a syntax error"?
-			return null;
 		}
+
+		// "return a syntax error"?
+		$this->parseError( 'expected-eof', $this->currentToken );
+
+		return null;
 	}
 
 	/**
 	 * Parse a list of component values
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#parse-a-list-of-component-values
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-list-of-component-values
 	 * @return ComponentValueList
 	 */
 	public function parseComponentValueList() {
 		$list = new ComponentValueList();
 		while ( true ) {
-			$this->consumeToken(); // Move to the first/next token
+			// Move to the first/next token
+			$this->consumeToken();
 			$value = $this->consumeComponentValue();
 			if ( $value instanceof Token && $value->type() === Token::T_EOF ) {
 				break;
@@ -322,12 +322,39 @@ class Parser {
 	}
 
 	/**
+	 * Parse a comma-separated list of component values
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#parse-comma-separated-list-of-component-values
+	 * @return ComponentValueList[]
+	 */
+	public function parseCommaSeparatedComponentValueList() {
+		$lists = [];
+		do {
+			$list = new ComponentValueList();
+			while ( true ) {
+				// Move to the first/next token
+				$this->consumeToken();
+				$value = $this->consumeComponentValue();
+				if ( $value instanceof Token &&
+					( $value->type() === Token::T_EOF || $value->type() === Token::T_COMMA )
+				) {
+					break;
+				}
+				$list->add( $value );
+			}
+			$lists[] = $list;
+		} while ( $value->type() === Token::T_COMMA );
+
+		return $lists;
+	}
+
+	/**
 	 * Consume a list of rules
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-list-of-rules
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-list-of-rules
 	 * @param bool $topLevel Determines the behavior when CDO and CDC tokens are encountered
 	 * @return RuleList
 	 */
 	protected function consumeRuleList( $topLevel ) {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		$list = new RuleList();
 		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
@@ -341,11 +368,10 @@ class Parser {
 
 				case Token::T_CDO:
 				case Token::T_CDC:
-					if ( $topLevel ) {
-						// Do nothing
-					} else {
+					if ( !$topLevel ) {
 						$rule = $this->consumeQualifiedRule();
 					}
+					// Else, do nothing
 					break;
 
 				case Token::T_AT_KEYWORD:
@@ -363,17 +389,19 @@ class Parser {
 			$this->consumeToken();
 		}
 
+		// @phan-suppress-next-line PhanPluginUnreachableCode Reached by break 2
 		return $list;
 	}
 
 	/**
 	 * Consume a list of declarations and at-rules
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-list-of-declarations
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-list-of-declarations
 	 * @param bool $allowAtRules Whether to allow at-rules. This flag is not in
-	 *  the spec, and is used to implement the non-spec self::parseDeclarationList().
+	 *  the spec and is used to implement the non-spec self::parseDeclarationList().
 	 * @return DeclarationOrAtRuleList|DeclarationList
 	 */
 	protected function consumeDeclarationOrAtRuleList( $allowAtRules = true ) {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		$list = $allowAtRules ? new DeclarationOrAtRuleList() : new DeclarationList();
 		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
@@ -400,7 +428,6 @@ class Parser {
 					break;
 
 				case Token::T_IDENT:
-					// The draft changes this to ComponentValue instead of Token, which makes more sense.
 					$cvs = [];
 					do {
 						$cvs[] = $this->consumeComponentValue();
@@ -411,7 +438,8 @@ class Parser {
 					);
 					$tokens = ( new ComponentValueList( $cvs ) )->toTokenArray();
 					$parser = static::newFromTokens( $tokens, $this->currentToken );
-					$parser->consumeToken(); // Load that first token
+					// Load that first token
+					$parser->consumeToken();
 					$declaration = $parser->consumeDeclaration();
 					// Propagate any errors
 					$this->parseErrors = array_merge( $this->parseErrors, $parser->parseErrors );
@@ -436,32 +464,32 @@ class Parser {
 			$this->consumeToken();
 		}
 
+		// @phan-suppress-next-line PhanPluginUnreachableCode Reached by break 2
 		return $list;
 	}
 
 	/**
 	 * Consume a declaration
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-declaration
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-declaration
 	 * @return Declaration|null
 	 */
 	protected function consumeDeclaration() {
 		$declaration = new Declaration( $this->currentToken );
 
-		// 2.
+		// 1.
 		$this->consumeTokenAndWhitespace();
 
-		// 3.
+		// 2. and 3.
 		if ( $this->currentToken->type() !== Token::T_COLON ) {
 			$this->parseError( 'expected-colon', $this->currentToken );
 			return null;
 		}
-		$this->consumeToken();
+		$this->consumeTokenAndWhitespace();
 
 		// 4.
 		$value = $declaration->getValue();
 		$l1 = $l2 = -1;
 		while ( $this->currentToken->type() !== Token::T_EOF ) {
-			// The draft changes this to ComponentValue instead of Token, which makes more sense.
 			$value->add( $this->consumeComponentValue() );
 			if ( $this->currentToken->type() !== Token::T_WHITESPACE ) {
 				$l1 = $l2;
@@ -470,49 +498,63 @@ class Parser {
 			$this->consumeToken();
 		}
 
-		// 5.
-		// @phan-suppress-next-line PhanSuspiciousValueComparison False positive about $l1 is -1
+		// 5. and part of 6.
+		// @phan-suppress-next-line PhanImpossibleValueComparison False positive about $l1 is -1
 		$v1 = $l1 >= 0 ? $value[$l1] : null;
 		$v2 = $l2 >= 0 ? $value[$l2] : null;
-		if ( $v1 instanceof Token && $v1->type() === Token::T_DELIM && $v1->value() === '!' &&
-			$v2 instanceof Token && $v2->type() === Token::T_IDENT &&
+		if ( $v1 instanceof Token &&
+			$v1->type() === Token::T_DELIM &&
+			$v1->value() === '!' &&
+			$v2 instanceof Token &&
+			$v2->type() === Token::T_IDENT &&
 			!strcasecmp( $v2->value(), 'important' )
 		) {
-			// Technically it doesn't say to remove any whitespace within/after
-			// the "!important" too, but it makes sense to do so.
+			// This removes the "!" and "important" (5), and also any whitespace between/after (6)
+			// @phan-suppress-next-line PhanPossiblyInfiniteLoop
 			while ( isset( $value[$l1] ) ) {
 				$value->remove( $l1 );
 			}
 			$declaration->setImportant( true );
 		}
 
-		// 6.
+		// Rest of 6.
+		$i = $value->count();
+		// @phan-suppress-next-line PhanUndeclaredMethod False positive
+		while ( --$i >= 0 && $value[$i] instanceof Token && $value[$i]->type() === Token::T_WHITESPACE ) {
+			$value->remove( $i );
+		}
+
+		// 7.
 		return $declaration;
 	}
 
 	/**
 	 * Consume an at-rule
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-an-at-rule
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-at-rule
 	 * @return AtRule
+	 * @suppress PhanPluginNeverReturnMethod due to break 2;
 	 */
 	protected function consumeAtRule() {
 		$rule = new AtRule( $this->currentToken );
 		$this->consumeToken();
+		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
 			switch ( $this->currentToken->type() ) {
 				case Token::T_SEMICOLON:
-					return $rule;
+					break 2;
 
 				case Token::T_EOF:
-					// Parse error from the editor's draft as of 2017-01-11
 					if ( $this->currentToken->typeFlag() !== 'recursion-depth-exceeded' ) {
 						$this->parseError( 'unexpected-eof-in-rule', $this->currentToken );
 					}
-					return $rule;
+					break 2;
 
 				case Token::T_LEFT_BRACE:
 					$rule->setBlock( $this->consumeSimpleBlock() );
-					return $rule;
+					break 2;
+
+				// Spec has "simple block with an associated token of <{-token>" here, but that isn't possible
+				// because it's not a Token.
 
 				default:
 					$rule->getPrelude()->add( $this->consumeComponentValue() );
@@ -520,14 +562,14 @@ class Parser {
 			}
 			$this->consumeToken();
 		}
-		// @codeCoverageIgnoreStart
-	}
 
-	// @codeCoverageIgnoreEnd
+		// @phan-suppress-next-line PhanPluginUnreachableCode False positive due to break 2;
+		return $rule;
+	}
 
 	/**
 	 * Consume a qualified rule
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-qualified-rule
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-qualified-rule
 	 * @return QualifiedRule|null
 	 */
 	protected function consumeQualifiedRule() {
@@ -542,7 +584,10 @@ class Parser {
 
 				case Token::T_LEFT_BRACE:
 					$rule->setBlock( $this->consumeSimpleBlock() );
-					return $rule;
+					break 2;
+
+				// Spec has "simple block with an associated token of <{-token>" here, but that isn't possible
+				// because it's not a Token.
 
 				default:
 					$rule->getPrelude()->add( $this->consumeComponentValue() );
@@ -550,14 +595,14 @@ class Parser {
 			}
 			$this->consumeToken();
 		}
-		// @codeCoverageIgnoreStart
-	}
 
-	// @codeCoverageIgnoreEnd
+		// @phan-suppress-next-line PhanPluginUnreachableCode False positive due to break 2;
+		return $rule;
+	}
 
 	/**
 	 * Consume a component value
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-component-value
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-component-value
 	 * @return ComponentValue
 	 */
 	protected function consumeComponentValue() {
@@ -565,7 +610,7 @@ class Parser {
 			$this->parseError( 'recursion-depth-exceeded', $this->currentToken );
 			// There's no way to safely recover from this without more recursion.
 			// So just eat the rest of the input, then return a
-			// specially-flagged EOF so we can avoid 100 "unexpected EOF"
+			// specially-flagged EOF, so we can avoid 100 "unexpected EOF"
 			// errors.
 			$position = $this->currentToken->getPosition();
 			while ( $this->currentToken->type() !== Token::T_EOF ) {
@@ -600,24 +645,25 @@ class Parser {
 
 	/**
 	 * Consume a simple block
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-simple-block
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-simple-block
 	 * @return SimpleBlock
+	 * @suppress PhanPluginNeverReturnMethod due to break 2;
 	 */
 	protected function consumeSimpleBlock() {
 		$block = new SimpleBlock( $this->currentToken );
 		$endTokenType = $block->getEndTokenType();
 		$this->consumeToken();
+		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
 			switch ( $this->currentToken->type() ) {
 				case Token::T_EOF:
-					// Parse error from the editor's draft as of 2017-01-12
 					if ( $this->currentToken->typeFlag() !== 'recursion-depth-exceeded' ) {
 						$this->parseError( 'unexpected-eof-in-block', $this->currentToken );
 					}
-					return $block;
+					break 2;
 
 				case $endTokenType:
-					return $block;
+					break 2;
 
 				default:
 					$block->getValue()->add( $this->consumeComponentValue() );
@@ -625,31 +671,32 @@ class Parser {
 			}
 			$this->consumeToken();
 		}
-		// @codeCoverageIgnoreStart
-	}
 
-	// @codeCoverageIgnoreEnd
+		// @phan-suppress-next-line PhanPluginUnreachableCode False positive due to break 2;
+		return $block;
+	}
 
 	/**
 	 * Consume a function
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-function
+	 * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#consume-function
 	 * @return CSSFunction
+	 * @suppress PhanPluginNeverReturnMethod due to break 2;
 	 */
 	protected function consumeFunction() {
 		$function = new CSSFunction( $this->currentToken );
 		$this->consumeToken();
 
+		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
 			switch ( $this->currentToken->type() ) {
 				case Token::T_EOF:
-					// Parse error from the editor's draft as of 2017-01-12
 					if ( $this->currentToken->typeFlag() !== 'recursion-depth-exceeded' ) {
 						$this->parseError( 'unexpected-eof-in-function', $this->currentToken );
 					}
-					return $function;
+					break 2;
 
 				case Token::T_RIGHT_PAREN:
-					return $function;
+					break 2;
 
 				default:
 					$function->getValue()->add( $this->consumeComponentValue() );
@@ -657,7 +704,9 @@ class Parser {
 			}
 			$this->consumeToken();
 		}
-		// @codeCoverageIgnoreStart
+
+		// @phan-suppress-next-line PhanPluginUnreachableCode False positive due to break 2;
+		return $function;
 	}
 
 	// @codeCoverageIgnoreEnd

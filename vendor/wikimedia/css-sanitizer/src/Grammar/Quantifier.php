@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,20 +8,25 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use Iterator;
+use UnexpectedValueException;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\Token;
 
 /**
  * Matcher that matches a sub-Matcher a certain number of times
  * ("?", "*", "+", "#", "{A,B}" multipliers)
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#component-multipliers
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#component-multipliers
  */
 class Quantifier extends Matcher {
 	/** @var Matcher */
 	protected $matcher;
 
 	/** @var int */
-	protected $min, $max;
+	protected $min;
+
+	/** @var int */
+	protected $max;
 
 	/** @var bool Whether matches are comma-separated */
 	protected $commas;
@@ -39,7 +46,7 @@ class Quantifier extends Matcher {
 
 	/**
 	 * Implements "?": 0 or 1 matches
-	 * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-opt
+	 * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#mult-opt
 	 * @param Matcher $matcher
 	 * @return static
 	 */
@@ -49,7 +56,7 @@ class Quantifier extends Matcher {
 
 	/**
 	 * Implements "*": 0 or more matches
-	 * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-zero-plus
+	 * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#mult-zero-plus
 	 * @param Matcher $matcher
 	 * @return static
 	 */
@@ -59,7 +66,7 @@ class Quantifier extends Matcher {
 
 	/**
 	 * Implements "+": 1 or more matches
-	 * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-one-plus
+	 * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#mult-one-plus
 	 * @param Matcher $matcher
 	 * @return static
 	 */
@@ -69,7 +76,7 @@ class Quantifier extends Matcher {
 
 	/**
 	 * Implements "{A,B}": Between A and B matches
-	 * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-num-range
+	 * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#mult-num-range
 	 * @param Matcher $matcher
 	 * @param int|float $min Minimum number of matches
 	 * @param int|float $max Maximum number of matches
@@ -81,7 +88,7 @@ class Quantifier extends Matcher {
 
 	/**
 	 * Implements "#" and "#{A,B}": Between A and B matches, comma-separated
-	 * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-comma
+	 * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#mult-comma
 	 * @param Matcher $matcher
 	 * @param int|float $min Minimum number of matches
 	 * @param int|float $max Maximum number of matches
@@ -104,8 +111,8 @@ class Quantifier extends Matcher {
 		];
 		do {
 			/** @var $lastMatch GrammarMatch */
-			/** @var $iter \Iterator<GrammarMatch> */
-			list( $lastMatch, $iter ) = $stack[count( $stack ) - 1];
+			/** @var $iter Iterator<GrammarMatch> */
+			[ $lastMatch, $iter ] = $stack[count( $stack ) - 1];
 
 			// If the top of the stack has no more matches, pop it, maybe
 			// yield the last matched position, and loop.
@@ -130,7 +137,7 @@ class Quantifier extends Matcher {
 
 			// Quantifiers don't work well when the quantified thing can be empty.
 			if ( $match->getLength() === 0 ) {
-				throw new \UnexpectedValueException( 'Empty match in quantifier!' );
+				throw new UnexpectedValueException( 'Empty match in quantifier!' );
 			}
 
 			$nextFrom = $match->getNext();
@@ -146,11 +153,13 @@ class Quantifier extends Matcher {
 			if ( $this->commas ) {
 				$n = $nextFrom;
 				if ( isset( $values[$n] ) && $values[$n] instanceof Token &&
+					// @phan-suppress-next-line PhanUndeclaredMethod False positive
 					$values[$n]->type() === Token::T_WHITESPACE
 				) {
 					$n = $this->next( $values, $n, [ 'skip-whitespace' => true ] + $options );
 				}
 				if ( isset( $values[$n] ) && $values[$n] instanceof Token &&
+					// @phan-suppress-next-line PhanUndeclaredMethod False positive
 					$values[$n]->type() === Token::T_COMMA
 				) {
 					$nextFrom = $this->next( $values, $n, [ 'skip-whitespace' => true ] + $options );
@@ -160,7 +169,7 @@ class Quantifier extends Matcher {
 			}
 
 			// If there can be more matches, push another one onto the stack
-			// and try it. Otherwise yield and continue with the current match.
+			// and try it. Otherwise, yield and continue with the current match.
 			if ( $canBeMore ) {
 				$stack[] = [ $match, $this->matcher->generateMatches( $values, $nextFrom, $options ) ];
 			} else {

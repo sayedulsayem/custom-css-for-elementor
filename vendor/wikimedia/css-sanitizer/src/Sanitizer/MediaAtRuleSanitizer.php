@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -80,6 +82,7 @@ class MediaAtRuleSanitizer extends RuleSanitizer {
 		$this->fixPreludeWhitespace( $ret, false );
 		$this->sanitizeRuleBlock( $ret->getBlock(), $this->ruleSanitizers );
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 }

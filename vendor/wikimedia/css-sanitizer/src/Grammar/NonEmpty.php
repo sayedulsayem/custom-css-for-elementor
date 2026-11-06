@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -9,8 +11,8 @@ namespace Wikimedia\CSS\Grammar;
 use Wikimedia\CSS\Objects\ComponentValueList;
 
 /**
- * Matcher that requires its sub-Matcher has only non-empty matches ("!" multipier)
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-req
+ * Matcher that requires its sub-Matcher has only non-empty matches ("!" multiplier)
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#mult-req
  */
 class NonEmpty extends Matcher {
 	/** @var Matcher */

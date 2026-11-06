@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -11,7 +13,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Matcher that matches one out of a set of Matchers ("|" combiner).
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#comb-one
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#comb-one
  */
 class Alternative extends Matcher {
 	/** @var Matcher[] */

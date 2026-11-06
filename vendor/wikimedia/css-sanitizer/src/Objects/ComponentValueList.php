@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,10 +8,17 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
+
 /**
- * Represent a list of CSS declarations
+ * Represent a list of CSS component values, eg. `10px 20px` is the
+ * component value list in the declaration `margin: 10px 20px;`.
+ * @extends CSSObjectList<ComponentValue>
  */
 class ComponentValueList extends CSSObjectList {
+	/**
+	 * @var string
+	 */
 	protected static $objectType = ComponentValue::class;
 
 	/** @inheritDoc */
@@ -21,7 +30,7 @@ class ComponentValueList extends CSSObjectList {
 				case Token::T_LEFT_BRACKET:
 				case Token::T_LEFT_PAREN:
 				case Token::T_LEFT_BRACE:
-					throw new \InvalidArgumentException(
+					throw new InvalidArgumentException(
 						static::class . " may not contain tokens of type \"$type\"."
 					);
 			}

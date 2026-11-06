@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -30,7 +32,7 @@ class PropertySanitizer extends Sanitizer {
 	 * @param Matcher|null $cssWideKeywordsMatcher Matcher for keywords that should
 	 *  be recognized for all known properties.
 	 */
-	public function __construct( array $properties = [], Matcher $cssWideKeywordsMatcher = null ) {
+	public function __construct( array $properties = [], ?Matcher $cssWideKeywordsMatcher = null ) {
 		$this->setKnownProperties( $properties );
 		$this->setCssWideKeywordsMatcher( $cssWideKeywordsMatcher ?: new NothingMatcher );
 	}
@@ -69,7 +71,7 @@ class PropertySanitizer extends Sanitizer {
 	public function addKnownProperties( $props ) {
 		$dups = [];
 		foreach ( $props as $k => $v ) {
-			if ( isset( $this->knownProperties[$k] ) && $props[$k] !== $this->knownProperties[$k] ) {
+			if ( isset( $this->knownProperties[$k] ) && $v !== $this->knownProperties[$k] ) {
 				$dups[] = $k;
 			}
 		}
@@ -124,6 +126,7 @@ class PropertySanitizer extends Sanitizer {
 			return null;
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $object;
 	}
 }

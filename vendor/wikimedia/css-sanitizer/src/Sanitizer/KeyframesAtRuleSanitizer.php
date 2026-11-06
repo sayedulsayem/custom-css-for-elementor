@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -18,7 +20,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS \@keyframes rule
- * @see https://www.w3.org/TR/2017/WD-css-animations-1-20171130/#keyframes
+ * @see https://www.w3.org/TR/2023/WD-css-animations-1-20230302/#keyframes
  */
 class KeyframesAtRuleSanitizer extends RuleSanitizer {
 
@@ -79,6 +81,7 @@ class KeyframesAtRuleSanitizer extends RuleSanitizer {
 		$this->fixPreludeWhitespace( $ret, false );
 		$this->sanitizeRuleBlock( $ret->getBlock(), [ $this->ruleSanitizer ] );
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 }

@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Wikimedia\\CSS\\' => array($vendorDir . '/wikimedia/css-sanitizer/src'),
-    'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src/Wikimedia/AtEase'),
+    'Wikimedia\\' => array($vendorDir . '/wikimedia/scoped-callback/src'),
+    'Symfony\\Polyfill\\Php85\\' => array($vendorDir . '/symfony/polyfill-php85'),
 );

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -24,7 +26,7 @@ class Stylesheet implements CSSObject {
 	/**
 	 * @param RuleList|null $rules
 	 */
-	public function __construct( RuleList $rules = null ) {
+	public function __construct( ?RuleList $rules = null ) {
 		$this->ruleList = $rules ?: new RuleList();
 	}
 

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,10 +8,11 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Util;
 
 /**
- * Represent a CSS qualified rule
+ * Represent a CSS qualified rule, eg. `div { color: red }`
  */
 class QualifiedRule extends Rule {
 
@@ -20,7 +23,7 @@ class QualifiedRule extends Rule {
 	protected $block;
 
 	/** @inheritDoc */
-	public function __construct( Token $token = null ) {
+	public function __construct( ?Token $token = null ) {
 		parent::__construct( $token ?: new Token( Token::T_EOF ) );
 		$this->prelude = new ComponentValueList();
 		$this->block = SimpleBlock::newFromDelimiter( Token::T_LEFT_BRACE );
@@ -51,9 +54,9 @@ class QualifiedRule extends Rule {
 	 * Set the block
 	 * @param SimpleBlock|null $block
 	 */
-	public function setBlock( SimpleBlock $block = null ) {
+	public function setBlock( ?SimpleBlock $block = null ) {
 		if ( $block->getStartTokenType() !== Token::T_LEFT_BRACE ) {
-			throw new \InvalidArgumentException( 'Qualified rule block must be delimited by {}' );
+			throw new InvalidArgumentException( 'Qualified rule block must be delimited by {}' );
 		}
 		$this->block = $block;
 	}
@@ -65,7 +68,7 @@ class QualifiedRule extends Rule {
 	private function toTokenOrCVArray( $function ) {
 		$ret = [];
 
-		// Manually looping and appending turns out to be noticably faster than array_merge.
+		// Manually looping and appending turns out to be noticeably faster than array_merge.
 		foreach ( $this->prelude->$function() as $v ) {
 			$ret[] = $v;
 		}

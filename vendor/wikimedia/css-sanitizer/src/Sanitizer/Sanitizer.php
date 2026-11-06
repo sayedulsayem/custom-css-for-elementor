@@ -1,7 +1,10 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
+ * @phan-file-suppress PhanTemplateTypeNotUsedInFunctionReturn
  */
 
 namespace Wikimedia\CSS\Sanitizer;
@@ -9,6 +12,7 @@ namespace Wikimedia\CSS\Sanitizer;
 use Wikimedia\CSS\Objects\CSSObject;
 use Wikimedia\CSS\Objects\CSSObjectList;
 use Wikimedia\CSS\Objects\RuleList;
+use Wikimedia\ScopedCallback;
 
 /**
  * Base class for CSS sanitizers
@@ -27,6 +31,22 @@ abstract class Sanitizer {
 	}
 
 	/**
+	 * Temporarily clear sanitization errors
+	 *
+	 * Errors will be cleared, then restored when the returned ScopedCallback
+	 * goes out of scope or is consumed.
+	 *
+	 * @return ScopedCallback
+	 */
+	public function stashSanitizationErrors() {
+		$reset = new ScopedCallback( function ( $e ) {
+			$this->sanitizationErrors = $e;
+		}, [ $this->sanitizationErrors ] );
+		$this->sanitizationErrors = [];
+		return $reset;
+	}
+
+	/**
 	 * Clear sanitization errors
 	 */
 	public function clearSanitizationErrors() {
@@ -40,15 +60,16 @@ abstract class Sanitizer {
 	 * @param array $data Extra data about the error.
 	 */
 	protected function sanitizationError( $tag, CSSObject $object, array $data = [] ) {
-		list( $line, $pos ) = $object->getPosition();
+		[ $line, $pos ] = $object->getPosition();
 		$this->sanitizationErrors[] = array_merge( [ $tag, $line, $pos ], $data );
 	}
 
 	/**
 	 * Run another sanitizer over a CSSObject
+	 * @template T of CSSObject
 	 * @param Sanitizer $sanitizer
-	 * @param CSSObject $object
-	 * @return CSSObject|null
+	 * @param T $object
+	 * @return T|null
 	 */
 	protected function sanitizeObj( Sanitizer $sanitizer, CSSObject $object ) {
 		$newObj = $sanitizer->doSanitize( $object );
@@ -62,13 +83,15 @@ abstract class Sanitizer {
 
 	/**
 	 * Run a sanitizer over all CSSObjects in a CSSObjectList
+	 * @template T of CSSObjectList
 	 * @param Sanitizer $sanitizer
-	 * @param CSSObjectList $list
-	 * @return CSSObjectList
+	 * @param T $list
+	 * @return T
 	 */
 	protected function sanitizeList( Sanitizer $sanitizer, CSSObjectList $list ) {
 		$class = get_class( $list );
 		$ret = new $class;
+		'@phan-var T $ret';
 		foreach ( $list as $obj ) {
 			$newObj = $sanitizer->doSanitize( $obj );
 			if ( $newObj ) {
@@ -99,7 +122,7 @@ abstract class Sanitizer {
 				if ( $sanitizer->handlesRule( $rule ) ) {
 					$indexes = $sanitizer->getIndex();
 					if ( is_array( $indexes ) ) {
-						list( $testIndex, $setIndex ) = $indexes;
+						[ $testIndex, $setIndex ] = $indexes;
 					} else {
 						$testIndex = $setIndex = $indexes;
 					}
@@ -122,16 +145,18 @@ abstract class Sanitizer {
 
 	/**
 	 * Sanitize a CSS object
-	 * @param CSSObject $object
-	 * @return CSSObject|null Sanitized version of the object, or null if
+	 * @template T of CSSObject
+	 * @param T $object
+	 * @return ?T Sanitized version of the object, or null if
 	 *  sanitization failed
 	 */
 	abstract protected function doSanitize( CSSObject $object );
 
 	/**
 	 * Sanitize a CSS object
-	 * @param CSSObject $object
-	 * @return CSSObject|null Sanitized version of the object, or null if
+	 * @template T of CSSObject
+	 * @param T $object
+	 * @return ?T Sanitized version of the object, or null if
 	 *  sanitization failed
 	 */
 	public function sanitize( CSSObject $object ) {

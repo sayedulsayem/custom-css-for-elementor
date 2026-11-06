@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,15 +8,19 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Util;
 
 /**
- * Represent a CSS declaration
+ * Represent a CSS declaration, eg. `margin: 10px 20px;`
  */
 class Declaration implements DeclarationOrAtRule {
 
-	/** @var int Line and position in the input where this declaration starts */
-	protected $line = -1, $pos = -1;
+	/** @var int Line in the input where this declaration starts */
+	protected $line = -1;
+
+	/** @var int Position in the input where this declaration starts */
+	protected $pos = -1;
 
 	/** @var string */
 	protected $name;
@@ -30,12 +36,12 @@ class Declaration implements DeclarationOrAtRule {
 	 */
 	public function __construct( Token $token ) {
 		if ( $token->type() !== Token::T_IDENT ) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"Declaration must begin with an ident token, got {$token->type()}"
 			);
 		}
 
-		list( $this->line, $this->pos ) = $token->getPosition();
+		[ $this->line, $this->pos ] = $token->getPosition();
 		$this->name = $token->value();
 		$this->value = new ComponentValueList();
 	}
@@ -96,7 +102,7 @@ class Declaration implements DeclarationOrAtRule {
 			[ 'value' => $this->name, 'position' => [ $this->line, $this->pos ] ]
 		);
 		$ret[] = $v = new Token( Token::T_COLON );
-		// Manually looping and appending turns out to be noticably faster than array_merge.
+		// Manually looping and appending turns out to be noticeably faster than array_merge.
 		foreach ( $this->value->$function() as $v ) {
 			$ret[] = $v;
 		}

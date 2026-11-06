@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,12 +8,15 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use ArrayIterator;
+use EmptyIterator;
+use Iterator;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Util;
 
 /**
  * Matcher that groups other matchers without ordering ("&&" and "||" combiners)
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#component-combinators
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#component-combinators
  */
 class UnorderedGroup extends Matcher {
 	/** @var Matcher[] */
@@ -58,18 +63,20 @@ class UnorderedGroup extends Matcher {
 			[
 				new GrammarMatch( $values, $start, 0 ),
 				$this->matchers,
-				new \ArrayIterator( $this->matchers ),
+				new ArrayIterator( $this->matchers ),
 				null,
-				new \EmptyIterator
+				new EmptyIterator
 			]
 		];
 		do {
 			/** @var $lastMatch GrammarMatch */
 			/** @var $matchers Matcher[] */
-			/** @var $matcherIter \Iterator<Matcher> */
+			/** @var $matcherIter Iterator<Matcher> */
 			/** @var $curMatcher Matcher|null */
-			/** @var $iter \Iterator<GrammarMatch> */
-			list( $lastMatch, $matchers, $matcherIter, $curMatcher, $iter ) = $stack[count( $stack ) - 1];
+			/** @var $iter Iterator<GrammarMatch> */
+			[ $lastMatch, $matchers, $matcherIter, $curMatcher, $iter ] = $stack[count( $stack ) - 1];
+			// Ignore EmptyIterator here
+			'@phan-var Iterator $iter';
 
 			// If the top of the stack has more matches, process the next one.
 			if ( $iter->valid() ) {
@@ -77,9 +84,9 @@ class UnorderedGroup extends Matcher {
 				$iter->next();
 
 				// If we have unused matchers to try after this one, do so.
-				// Otherwise yield and continue with the current one.
+				// Otherwise, yield and continue with the current one.
 				if ( $matchers ) {
-					$stack[] = [ $match, $matchers, new \ArrayIterator( $matchers ), null, new \EmptyIterator ];
+					$stack[] = [ $match, $matchers, new ArrayIterator( $matchers ), null, new EmptyIterator ];
 				} else {
 					$newMatch = $this->makeMatch( $values, $start, $match->getNext(), $match, $stack );
 					$mid = $newMatch->getUniqueID();
@@ -92,7 +99,7 @@ class UnorderedGroup extends Matcher {
 			}
 
 			// We ran out of matches for the current top of the stack. Pop it,
-			// and put $curMatcher back into $matchers so it can be tried again
+			// and put $curMatcher back into $matchers, so it can be tried again
 			// at a later position.
 			array_pop( $stack );
 			if ( $curMatcher ) {
@@ -110,14 +117,12 @@ class UnorderedGroup extends Matcher {
 				unset( $matchers[$matcherIter->key()] );
 				$iter = $curMatcher->generateMatches( $values, $fromPos, $options );
 				$stack[] = [ $lastMatch, $matchers, $matcherIter, $curMatcher, $iter ];
-			} else {
-				if ( $stack && !$this->all ) {
-					$newMatch = $this->makeMatch( $values, $start, $fromPos, $lastMatch, $stack );
-					$mid = $newMatch->getUniqueID();
-					if ( !isset( $used[$mid] ) ) {
-						$used[$mid] = 1;
-						yield $newMatch;
-					}
+			} elseif ( $stack && !$this->all ) {
+				$newMatch = $this->makeMatch( $values, $start, $fromPos, $lastMatch, $stack );
+				$mid = $newMatch->getUniqueID();
+				if ( !isset( $used[$mid] ) ) {
+					$used[$mid] = 1;
+					yield $newMatch;
 				}
 			}
 		} while ( $stack );

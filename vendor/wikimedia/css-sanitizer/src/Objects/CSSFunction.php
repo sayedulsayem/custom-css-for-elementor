@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,10 +8,11 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Util;
 
 /**
- * Represent a CSS function
+ * Represent a CSS function, eg. `rgb(255, 0, 0)`
  */
 class CSSFunction extends ComponentValue {
 
@@ -24,12 +27,12 @@ class CSSFunction extends ComponentValue {
 	 */
 	public function __construct( Token $token ) {
 		if ( $token->type() !== Token::T_FUNCTION ) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"CSS function must begin with a function token, got {$token->type()}"
 			);
 		}
 
-		list( $this->line, $this->pos ) = $token->getPosition();
+		[ $this->line, $this->pos ] = $token->getPosition();
 		$this->name = $token->value();
 		$this->value = new ComponentValueList();
 	}
@@ -48,7 +51,7 @@ class CSSFunction extends ComponentValue {
 	}
 
 	/**
-	 * Return the functions's name
+	 * Return the function's name
 	 * @return string
 	 */
 	public function getName() {
@@ -74,7 +77,7 @@ class CSSFunction extends ComponentValue {
 			Token::T_FUNCTION,
 			[ 'value' => $this->name, 'position' => [ $this->line, $this->pos ] ]
 		);
-		// Manually looping and appending turns out to be noticably faster than array_merge.
+		// Manually looping and appending turns out to be noticeably faster than array_merge.
 		foreach ( $this->value->toTokenArray() as $v ) {
 			$ret[] = $v;
 		}

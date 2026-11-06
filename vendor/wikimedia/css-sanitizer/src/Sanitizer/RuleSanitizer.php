@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -88,10 +90,13 @@ abstract class RuleSanitizer extends Sanitizer {
 		}
 
 		$significant = $cv instanceof CSSFunction ||
-			$cv instanceof Token &&
-				Token::separate( new Token( Token::T_AT_KEYWORD, $rule->getName() ), $cv );
+			( $cv instanceof Token &&
+				Token::separate( new Token( Token::T_AT_KEYWORD, $rule->getName() ), $cv )
+			);
 
+		// @phan-suppress-next-line PhanUndeclaredMethod False positive
 		if ( $prelude[0] instanceof Token && $prelude[0]->type() === Token::T_WHITESPACE ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod False positive
 			$prelude[0] = $prelude[0]->copyWithSignificance( $significant );
 		} elseif ( $significant ) {
 			if ( $cloneIfNecessary ) {

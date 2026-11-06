@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -17,6 +19,7 @@ use Wikimedia\CSS\Grammar\UnorderedGroup;
 use Wikimedia\CSS\Objects\AtRule;
 use Wikimedia\CSS\Objects\CSSObject;
 use Wikimedia\CSS\Objects\Declaration;
+use Wikimedia\CSS\Objects\DeclarationOrAtRule;
 use Wikimedia\CSS\Objects\DeclarationOrAtRuleList;
 use Wikimedia\CSS\Objects\Rule;
 use Wikimedia\CSS\Objects\Token;
@@ -25,7 +28,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS \@page rule
- * @see https://www.w3.org/TR/2013/WD-css3-page-20130314/
+ * @see https://www.w3.org/TR/2023/WD-css-page-3-20230914/
  */
 class PageAtRuleSanitizer extends RuleSanitizer {
 
@@ -63,16 +66,32 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 		] );
 		$this->pageSelectorMatcher->setDefaultOptions( [ 'skip-whitespace' => false ] );
 
-		// Clone the $propertySanitizer and inject the special "size" property
+		// Clone the $propertySanitizer and inject the special properties
 		$this->propertySanitizer = clone $propertySanitizer;
-		$this->propertySanitizer->addKnownProperties( [ 'size' => new Alternative( [
-			Quantifier::count( $matcherFactory->length(), 1, 2 ),
-			new KeywordMatcher( 'auto' ),
-			UnorderedGroup::someOf( [
-				new KeywordMatcher( [ 'A5', 'A4', 'A3', 'B5', 'B4', 'letter', 'legal', 'ledger' ] ),
-				new KeywordMatcher( [ 'portrait', 'landscape' ] ),
+		$this->propertySanitizer->addKnownProperties( [
+			'size' => new Alternative( [
+				Quantifier::count( $matcherFactory->length(), 1, 2 ),
+				new KeywordMatcher( 'auto' ),
+				UnorderedGroup::someOf( [
+					new KeywordMatcher( [
+						'A5', 'A4', 'A3', 'B5', 'B4', 'JIS-B5', 'JIS-B4', 'letter', 'legal', 'ledger',
+					] ),
+					new KeywordMatcher( [ 'portrait', 'landscape' ] ),
+				] ),
 			] ),
-		] ) ] );
+			'page-orientation' => new KeywordMatcher( [ 'upright', 'rotate-left', 'rotate-right' ] ),
+			'marks' => new Alternative( [
+				new KeywordMatcher( 'none' ),
+				UnorderedGroup::someOf( [
+					new KeywordMatcher( 'crop' ),
+					new KeywordMatcher( 'cross' ),
+				] ),
+			] ),
+			'bleed' => new Alternative( [
+				new KeywordMatcher( 'auto' ),
+				$matcherFactory->length(),
+			] ),
+		] );
 
 		$this->ruleSanitizer = new MarginAtRuleSanitizer( $propertySanitizer );
 	}
@@ -123,6 +142,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 				$this->sanitizationError( 'invalid-page-rule-content', $thing );
 				$thing = null;
 			}
+			'@phan-var DeclarationOrAtRule $thing';
 			if ( $thing ) {
 				$newList->add( $thing );
 			}
@@ -130,6 +150,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 		$blockContents->clear();
 		$blockContents->add( $newList->toComponentValueArray() );
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 }

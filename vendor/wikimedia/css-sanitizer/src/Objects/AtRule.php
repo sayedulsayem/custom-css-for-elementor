@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,10 +8,11 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Util;
 
 /**
- * Represent a CSS at-rule
+ * Represent a CSS at-rule, eg. `@import url("styles.css")` or `@media (min-width: 768px) { div { color: red } }`
  */
 class AtRule extends Rule implements DeclarationOrAtRule {
 
@@ -27,7 +30,7 @@ class AtRule extends Rule implements DeclarationOrAtRule {
 	 */
 	public function __construct( Token $token ) {
 		if ( $token->type() !== Token::T_AT_KEYWORD ) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"At rule must begin with an at-keyword token, got {$token->type()}"
 			);
 		}
@@ -81,9 +84,9 @@ class AtRule extends Rule implements DeclarationOrAtRule {
 	 * Set the block
 	 * @param SimpleBlock|null $block
 	 */
-	public function setBlock( SimpleBlock $block = null ) {
+	public function setBlock( ?SimpleBlock $block = null ) {
 		if ( $block->getStartTokenType() !== Token::T_LEFT_BRACE ) {
-			throw new \InvalidArgumentException( 'At-rule block must be delimited by {}' );
+			throw new InvalidArgumentException( 'At-rule block must be delimited by {}' );
 		}
 		$this->block = $block;
 	}
@@ -98,7 +101,7 @@ class AtRule extends Rule implements DeclarationOrAtRule {
 		$ret[] = new Token(
 			Token::T_AT_KEYWORD, [ 'value' => $this->name, 'position' => [ $this->line, $this->pos ] ]
 		);
-		// Manually looping and appending turns out to be noticably faster than array_merge.
+		// Manually looping and appending turns out to be noticeably faster than array_merge.
 		foreach ( $this->prelude->$function() as $v ) {
 			$ret[] = $v;
 		}

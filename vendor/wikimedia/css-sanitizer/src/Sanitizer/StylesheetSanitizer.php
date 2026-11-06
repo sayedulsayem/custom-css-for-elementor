@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -14,7 +16,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS stylesheet or rule list
- * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#css-stylesheets
+ * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#css-stylesheets
  */
 class StylesheetSanitizer extends Sanitizer {
 
@@ -52,7 +54,6 @@ class StylesheetSanitizer extends Sanitizer {
 		$ruleSanitizers = [
 			'style' => new StyleRuleSanitizer( $matcherFactory->cssSelectorList(), $propertySanitizer ),
 			'@font-face' => new FontFaceAtRuleSanitizer( $matcherFactory ),
-			'@font-feature-values' => new FontFeatureValuesAtRuleSanitizer( $matcherFactory ),
 			'@keyframes' => new KeyframesAtRuleSanitizer( $matcherFactory, $propertySanitizer ),
 			'@page' => new PageAtRuleSanitizer( $matcherFactory, $propertySanitizer ),
 			'@media' => new MediaAtRuleSanitizer( $matcherFactory->cssMediaQueryList() ),
@@ -66,15 +67,15 @@ class StylesheetSanitizer extends Sanitizer {
 		$ruleSanitizers['@supports']->setRuleSanitizers( $ruleSanitizers );
 
 		// Now we can put together the StylesheetSanitizer
-		$sanitizer = new StylesheetSanitizer( $ruleSanitizers + [
+		return new StylesheetSanitizer( $ruleSanitizers + [
 			// Note there's intentionally no "@charset" sanitizer, as that at-rule
 			// was removed in the Editor's Draft in favor of special handling
 			// in the parser.
-			'@import' => new ImportAtRuleSanitizer( $matcherFactory ),
+			'@import' => new ImportAtRuleSanitizer( $matcherFactory, [
+				'declarationSanitizer' => $propertySanitizer,
+			] ),
 			'@namespace' => new NamespaceAtRuleSanitizer( $matcherFactory ),
 		] );
-
-		return $sanitizer;
 	}
 
 	/**
@@ -102,6 +103,7 @@ class StylesheetSanitizer extends Sanitizer {
 			$object = $object->getRuleList();
 		}
 		if ( !$object instanceof RuleList ) {
+			'@phan-var CSSObject $object';
 			$this->sanitizationError( 'expected-stylesheet', $object );
 			return null;
 		}
@@ -111,6 +113,7 @@ class StylesheetSanitizer extends Sanitizer {
 			$ret = new Stylesheet( $ret );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 }

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -6,14 +8,15 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use Iterator;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\Token;
 use Wikimedia\CSS\Util;
 
 /**
  * Matcher that groups other matchers (juxtaposition)
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#component-combinators
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#comb-comma
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#component-combinators
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#comb-comma
  */
 class Juxtaposition extends Matcher {
 	/** @var Matcher[] */
@@ -37,7 +40,7 @@ class Juxtaposition extends Matcher {
 		$used = [];
 
 		// Match each of our matchers in turn, pushing each one onto a stack as
-		// we process it and popping a match once its exhausted.
+		// we process it and popping a match once it's exhausted.
 		$stack = [
 			[
 				new GrammarMatch( $values, $start, 0 ),
@@ -47,11 +50,10 @@ class Juxtaposition extends Matcher {
 			]
 		];
 		do {
-			/** @var $lastMatch GrammarMatch */
 			/** @var $lastEnd int */
-			/** @var $iter \Iterator<GrammarMatch> */
+			/** @var $iter Iterator<GrammarMatch> */
 			/** @var $needEmpty bool */
-			list( $lastMatch, $lastEnd, $iter, $needEmpty ) = $stack[count( $stack ) - 1];
+			[ , $lastEnd, $iter, $needEmpty ] = $stack[count( $stack ) - 1];
 
 			// If the top of the stack has no more matches, pop it and loop.
 			if ( !$iter->valid() ) {
@@ -85,18 +87,17 @@ class Juxtaposition extends Matcher {
 			if ( $this->commas ) {
 				if ( $match->getLength() === 0 ) {
 					$thisEnd = $lastEnd;
+				} elseif ( isset( $values[$nextFrom] ) && $values[$nextFrom] instanceof Token &&
+					// @phan-suppress-next-line PhanUndeclaredMethod False positive
+					$values[$nextFrom]->type() === Token::T_COMMA
+				) {
+					$nextFrom = $this->next( $values, $nextFrom, $options );
 				} else {
-					if ( isset( $values[$nextFrom] ) && $values[$nextFrom] instanceof Token &&
-						$values[$nextFrom]->type() === Token::T_COMMA
-					) {
-						$nextFrom = $this->next( $values, $nextFrom, $options );
-					} else {
-						$needEmpty = true;
-					}
+					$needEmpty = true;
 				}
 			}
 
-			// If we ran out of Matchers, yield the final position. Otherwise
+			// If we ran out of Matchers, yield the final position. Otherwise,
 			// push the next matcher onto the stack.
 			if ( count( $stack ) >= count( $this->matchers ) ) {
 				$newMatch = $this->makeMatch( $values, $start, $thisEnd, $match, $stack );

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -17,7 +19,10 @@ use Wikimedia\CSS\Util;
 class GrammarMatch {
 
 	/** @var int */
-	protected $start, $length;
+	protected $start;
+
+	/** @var int */
+	protected $length;
 
 	/** @var ComponentValue[] Matched ComponentValues */
 	protected $values;
