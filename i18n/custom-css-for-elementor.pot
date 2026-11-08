@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Custom CSS for Elementor 2.2.0\n"
+"Project-Id-Version: Custom CSS for Elementor 2.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-css-for-elementor\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-06T20:49:23+00:00\n"
+"POT-Creation-Date: 2026-11-08T15:51:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: custom-css-for-elementor\n"
@@ -78,6 +78,7 @@ msgid "Use \"selector\" to target wrapper element. Examples:<br>selector {color:
 msgstr ""
 
 #: inc/hook-action.php:183
+#: inc/hook-action.php:258
 msgid "If the CSS is not reflecting in the editor panel or frontend, you need to write a more specific CSS selector."
 msgstr ""
 
@@ -86,7 +87,7 @@ msgid "Custom CSS (Desktop)"
 msgstr ""
 
 #: inc/hook-action.php:257
-msgid "Use \"selector\" to target the element itself, or \"selector .child\" for elements inside it. Example: selector { color: red; }"
+msgid "Use \"selector\" to target the element itself, or \"selector .child\" for elements inside it. Examples: selector {color: red;} // For the element itself, selector .child-element {margin: 10px;} // For child elements, .my-class {text-align: center;} // Or use any custom selector"
 msgstr ""
 
 #: plugin.php:90

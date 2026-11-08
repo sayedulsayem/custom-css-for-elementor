@@ -1,6 +1,6 @@
 === Custom CSS for Elementor ===
 Plugin Name: Custom CSS for Elementor
-Version: 2.2.0
+Version: 2.2.1
 Author: Sayedul Sayem
 Author URI: https://sayedulsayem.com/
 Contributors: sayedulsayem, ikamal, gtarafdarr
@@ -8,7 +8,7 @@ Tags: elementor, css, custom css, responsive css, elementor addons
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,9 @@ No. This plugin is highly secure. It will sanitize user input so that the user c
 7. Mobile preview with input CSS.
 
 == Changelog ==
+
+= 2.2.1 =
+- Fix: PHP 8.2 compatibility issues with the bundled CSS sanitizer library.
 
 = 2.2.0 =
 - New: Support for Elementor Atomic Elements. Custom CSS is now available in the "Style" tab of atomic widgets and containers (requires the Atomic Widgets experiment to be active).
