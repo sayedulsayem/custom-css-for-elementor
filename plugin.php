@@ -18,12 +18,12 @@ final class Plugin {
 	/**
 	 * elementor required version
 	 */
-	const CCFE_MINIMUM_ELE_VER = '3.9.0';
+	const CCFE_MINIMUM_ELE_VER = '4.3.0';
 
 	/**
 	 * php required version
 	 */
-	const CCFE_MINIMUM_PHP_VER = '5.6';
+	const CCFE_MINIMUM_PHP_VER = '8.2';
 
 	/**
 	 * class constructor function
@@ -38,7 +38,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function define_constants() {
-		define( 'CUSTOM_CSS_FELE_VERSION', '2.2.0' );
+		define( 'CUSTOM_CSS_FELE_VERSION', '2.2.1' );
 		define( 'CUSTOM_CSS_FELE_PACKAGE', 'free' );
 		define( 'CUSTOM_CSS_FELE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		define( 'CUSTOM_CSS_FELE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
